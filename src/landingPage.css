@@ -1,0 +1,58 @@
+.container {
+    text-align: center;
+    color: var(--color);
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4),
+    rgba(0, 0, 0, 0.4)), url(https://firebasestorage.googleapis.com/v0/b/lcc-hub.appspot.com/o/LCC_invitados.jpg?alt=media&token=3a1d0103-29b1-48fc-93be-0bff3580b5f2);
+    background-size: cover;
+    background-position: center; 
+  /*  this is where the magic happens:  */
+    background-attachment: fixed;
+  }
+  
+  .second {
+    align-items: start;
+    justify-content: start;
+    background: whitesmoke;
+    background-image: none;
+    background-attachment: fixed;
+    height: 2000px;
+  }
+  .header {
+    margin-left: 40px;
+    margin-bottom: 0px;
+    font-size: 30px; /* Adjust the size as needed */
+    /* Add any other styling you want here */
+  }
+  .separator{
+    width: 95%;
+    border: none; /* Remove the default border */
+    height: 10px; /* Set the height of the horizontal line */
+    background-color: #000; /* Set the line color */
+  }
+
+  .footer{
+    background-color: #112e5c; /* Set the background color for the footer */
+    color: #3333; /* Set the text color */
+    text-align: center; /* Center-align the content */
+    padding:0px; /* Add some padding for spacing */
+    position: static; /* Positioning is relative to the viewport */
+    bottom: 0; /* Stick to the bottom */
+    width: 100%; /* Full width */
+  }
+
+  /* Default background color */
+.default-appbar {
+  background-color: transparent;
+  transition: background-color 0.5s; /* Add a smooth transition effect */
+}
+
+/* Background color when scrolled */
+.scrolled-appbar {
+  background-color: #3333;
+}
