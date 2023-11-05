@@ -15,9 +15,11 @@ import Icon from '@mui/material/Icon';
 import {CssBaseline, Divider, Grid} from "@mui/material";
 import SoyLCC from './SoyLCCcard';
 import NoticiasCard from './noticiasCard';
+import { Navigation } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
 import Galeria from './Galeria';
-import LoginDialog from "./loginDialog";
-import Carousel from "better-react-carousel"
 import Footer from "./footer";
 export default function LandingPage(){
 
@@ -135,21 +137,31 @@ export default function LandingPage(){
       </Box>
             <h2 className = "header">Galería</h2>
       <Divider className="separator" sx={{ml:"40px"}}/>
-      <Box sx = {{display: "flex", ml: "40px", mt:"20px", minWidth:"100%", justifyContent: "center"}}>
-        <Carousel cols={2} rows = {1} gap={10} loop>
-        {galeria.map((object) => {
+      <Box
+  sx={{
+    display: "flex",
+    ml: "40px",
+    mt: "20px",
+    width: "95%",
+    height: "120vh",
+    overflow: "hidden",
+    justifyContent:"center",
+    pb:5
+  }}
+>
+<Swiper navigation={true} modules={[Navigation]} className="mySwiper">
+  {galeria.map((object) => {
         if (object.showInPage === true) {
           return (
-            <Carousel.Item>
-              <img width="100%" src={object.url}/>
-            </Carousel.Item>
+            <SwiperSlide>
+              <img src={object.url}/>
+            </SwiperSlide>
           );
         }
       })}
-        </Carousel>
-      </Box>
-      
-    </Box>
+      </Swiper>
+</Box>
+</Box>
     <div className="footer">
         <Footer/>
       </div>
