@@ -8,18 +8,14 @@ import Button from '@mui/material/Button';
 import {db} from "./firebase"
 import {collection, query, orderBy, onSnapshot} from "firebase/firestore";
 import LCCIcon from "./assets/logo-lcc-blanco.svg"
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import SvgIcon from '@mui/icons-material/Menu';
-import Icon from '@mui/material/Icon';
 import {CssBaseline, Divider, Grid} from "@mui/material";
 import SoyLCC from './SoyLCCcard';
+import { useMsal } from "@azure/msal-react";
 import NoticiasCard from './noticiasCard';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
-import Galeria from './Galeria';
 import Footer from "./footer";
 export default function LandingPage(){
 
@@ -28,13 +24,6 @@ export default function LandingPage(){
     const [galeria, setGaleria] = React.useState<any[]>([]);
     const [isScrolled, setIsScrolled] = React.useState(false);
     const [openLogin, setOpenLogin] = React.useState(false);
-
-    const handleLoginOpen = () => {
-      setOpenLogin(true);
-    }
-  const handleLoginClose = () => {
-      setOpenLogin(false);
-  }
 
     React.useEffect(() => {
       function handleScroll() {
@@ -75,6 +64,21 @@ export default function LandingPage(){
       })
     console.log("oopsie")});
 
+    const { instance } = useMsal();
+
+    const loginRequest = {
+        scopes: ["User.Read"], // Define necessary scopes
+    };
+
+    const handleLogin = async () => {
+      try {
+        await instance.loginPopup(loginRequest);
+        window.alert("Logged in!"); // Set loggedIn state to true after successful login
+      } catch (error) {
+          console.log(error);
+      }
+    };
+
     return(
         <div>
         <Box sx={{ flexGrow: 1, color:"white"} }>
@@ -89,7 +93,7 @@ export default function LandingPage(){
               <Button color = "inherit" sx = {{m: 1}}>Proyectos</Button>
               <Button color = "inherit" sx = {{m: 1}}>Noticias</Button>
               <Button color = "inherit" sx = {{m: 1}}>Galería</Button>
-              <Button variant = "outlined" color="inherit" sx = {{m: 1}} onClick = {handleLoginOpen}>Login</Button>
+              <Button variant = "outlined" color="inherit" sx = {{m: 1}} onClick = {handleLogin}>Login</Button>
             </Toolbar>
           </AppBar>
         </Box>
