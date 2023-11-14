@@ -17,9 +17,14 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import Footer from "./footer";
+import IconButton from '@mui/material/IconButton';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
 export default function LandingPage(){
 
     const [anuncios, setAnuncios] = React.useState<any[]>([]);
+    const [loggedIn, setLogin] = React.useState<boolean>(false);
     const [soyLCC, setSoyLCC] = React.useState<any[]>([]);
     const [galeria, setGaleria] = React.useState<any[]>([]);
     const [isScrolled, setIsScrolled] = React.useState(false);
@@ -61,19 +66,26 @@ export default function LandingPage(){
         setGaleria(querySnapshot.docs.map((doc) => ({
           ...doc.data(),
         })) as any[]); // Provide a type annotation to specify the type
-      })
-    console.log("oopsie")});
+      })});
 
     const { instance } = useMsal();
 
     const loginRequest = {
         scopes: ["User.Read"], // Define necessary scopes
     };
-
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+      setAnchorEl(event.currentTarget);
+    };
+  
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
     const handleLogin = async () => {
       try {
         await instance.loginPopup(loginRequest);
-        window.alert("Logged in!"); // Set loggedIn state to true after successful login
+        setLogin(true);
+        console.log(loggedIn)
       } catch (error) {
           console.log(error);
       }
@@ -93,7 +105,40 @@ export default function LandingPage(){
               <Button color = "inherit" sx = {{m: 1}}>Proyectos</Button>
               <Button color = "inherit" sx = {{m: 1}}>Noticias</Button>
               <Button color = "inherit" sx = {{m: 1}}>Galería</Button>
+              {loggedIn ? (
+                <div>
+                <IconButton
+                  size="large"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleMenu}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                >
+                  <MenuItem onClick={handleClose}>Profile</MenuItem>
+                  <MenuItem onClick={handleClose}>My account</MenuItem>
+                </Menu>
+              </div>
+              ):
               <Button variant = "outlined" color="inherit" sx = {{m: 1}} onClick = {handleLogin}>Login</Button>
+              }
             </Toolbar>
           </AppBar>
         </Box>
