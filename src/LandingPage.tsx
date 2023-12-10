@@ -166,8 +166,9 @@ export default function LandingPage() {
         pagination={{
           clickable: true,
         }}
-        modules={[FreeMode, Pagination]}
         className="mySwiper"
+        modules={[FreeMode, Pagination, Navigation]}
+        navigation={true}
       >
         {soyLCC.map((object)=> {
           if (object.showInPage === true) {
@@ -195,8 +196,6 @@ export default function LandingPage() {
             }
           })}  */}
         </Box>
-        <h2 className="header">Proyectos y Artículos</h2>
-        <Divider className="separator" sx={{ ml: "40px" }} />
         <h2 className="header">Noticias</h2>
         <Divider className="separator" sx={{ ml: "40px" }} />
         <Box sx={{display:"flex", ml: "40px", mt: "20px" , width: "95%", height:"80vh", justifyContent:"center"}}>
@@ -207,8 +206,9 @@ export default function LandingPage() {
         pagination={{
           clickable: true,
         }}
-        modules={[FreeMode, Pagination]}
+        modules={[FreeMode, Pagination, Navigation]}
         className="mySwiper"
+        navigation={true}
       >
         {anuncios.map((object)=> {
           if (object.showInPage === true) {
