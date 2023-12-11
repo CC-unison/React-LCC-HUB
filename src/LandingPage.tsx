@@ -22,6 +22,7 @@ import IconButton from '@mui/material/IconButton';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import { Link } from 'react-router-dom';
 export default function LandingPage() {
 
   const [anuncios, setAnuncios] = React.useState<any[]>([]);
@@ -80,17 +81,24 @@ export default function LandingPage() {
     setAnchorEl(event.currentTarget);
   };
 
+  const handleLogOut = async () => {
+    instance.logoutPopup();
+    setLogin(false);
+  }
   const handleClose = () => {
     setAnchorEl(null);
   };
   const handleLogin = async () => {
+    if(loggedIn){
+
+    }else {
     try {
       await instance.loginPopup(loginRequest);
       setLogin(true);
       console.log(loggedIn)
     } catch (error) {
       console.log(error);
-    }
+    }}
   };
 
   return (
@@ -104,7 +112,6 @@ export default function LandingPage() {
               LCC HUB
             </Typography>
             <Button color="inherit" sx={{ m: 1 }}>Soy LCC</Button>
-            <Button color="inherit" sx={{ m: 1 }}>Proyectos</Button>
             <Button color="inherit" sx={{ m: 1 }}>Noticias</Button>
             <Button color="inherit" sx={{ m: 1 }}>Galería</Button>
             {loggedIn ? (
@@ -134,8 +141,8 @@ export default function LandingPage() {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  <MenuItem onClick={handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={handleClose}>My account</MenuItem>
+                  <Link to={"dashboard"}><MenuItem>Dashboard</MenuItem></Link>
+                  <MenuItem onClick={handleLogOut}>Cerrar sesión</MenuItem>
                 </Menu>
               </div>
             ) :
@@ -148,11 +155,19 @@ export default function LandingPage() {
         <div style={{ "textAlign": "left", "marginLeft": "70px" }}>
           <h1>LCC-HUB</h1>
           <h2>Seguimiento de trayectoria <br /> académica de alumnos de LCC</h2>
+          
+
+          {loggedIn?
+          (<Link to={"dashboard"}><Button variant="contained" sx={{
+            p: 1, minWidth: "100%", bgcolor: "background.paper", color: "text.primary", '&:hover': {
+              backgroundColor: '#f5f5f5',
+            }
+          }}>Entrar al dashboard</Button></Link>) : 
           <Button variant="contained" sx={{
             p: 1, minWidth: "100%", bgcolor: "background.paper", color: "text.primary", '&:hover': {
               backgroundColor: '#f5f5f5',
             }
-          }}>Iniciar sesion</Button>
+          }} onClick={handleLogin}>Iniciar sesión</Button>}
         </div>
       </Box>
       <Box className="container second" sx={{ display: "flex", flexDirection: 'column' }}>
@@ -184,17 +199,6 @@ export default function LandingPage() {
           }
         })}
       </Swiper>
-          {/* {soyLCC.map((object) => {
-            if (object.showInPage === true) {
-              return (
-                <SoyLCC
-                  foto={object.img}
-                  titulo={object.titulo}
-                  link={object.url}
-                />
-              );
-            }
-          })}  */}
         </Box>
         <h2 className="header">Noticias</h2>
         <Divider className="separator" sx={{ ml: "40px" }} />
