@@ -12,6 +12,7 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import Link from '@mui/material/Link';
+import Box from '@mui/material/Box';
 function Footer({
   backgroundColor = '#112e5c',
   textColor = '#fff',
@@ -23,19 +24,42 @@ function Footer({
       <Toolbar>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
+          <Box display="flex" alignItems="center" justifyContent="center" margin={0} >
             <Typography variant="h6" color="inherit" style={{ color: textColor }}>
-            <PublicIcon/> Redes sociales
-            </Typography>
+              <PublicIcon/> Redes sociales
+              </Typography>
+          </Box>  
+            
             <Typography variant="body1" color="inherit" style={{ color: textColor }}>
-            <FacebookIcon/> <Link href="https://www.facebook.com/LCCUNISON" color="inherit">Facebook </Link><br/>
-            <InstagramIcon/> <Link href="https://instagram.com/soy_lcc?igshid=MzRlODBiNWFlZA==" color="inherit">Instagram</Link><br/>
-            <LinkedInIcon/> <Link href="https://mx.linkedin.com/in/lcc-unison-460014180" color="inherit">LinkedIn </Link><br/>
-            <YouTubeIcon/> <Link href="https://www.youtube.com/@soyLCCUnison" color="inherit">Youtube</Link><br/>
+            <Box display="flex" alignItems="center" justifyContent="center" margin={1}>
+              <FacebookIcon />
+              <Link style={{paddingLeft: 2}} href="https://www.facebook.com/LCCUNISON" color="inherit" underline="none"
+>
+                Facebook
+              </Link>
+            </Box>
+            <Box display="flex" alignItems="center" justifyContent="center" margin={1} >
+              <InstagramIcon/>
+              <Link style={{paddingLeft: 2}} href="https://instagram.com/soy_lcc?igshid=MzRlODBiNWFlZA==" color="inherit" underline="none"
+>Instagram</Link><br/>
+            </Box>
+            <Box display="flex" alignItems="center" justifyContent="center" margin={1}>
+              <LinkedInIcon/>
+              <Link style={{paddingLeft: 2}} href="https://mx.linkedin.com/in/lcc-unison-460014180" color="inherit" underline="none"
+>LinkedIn </Link><br/>
+            </Box>
+            <Box display="flex" alignItems="center" justifyContent="center" margin={1} >
+              <YouTubeIcon/>
+              <Link style={{paddingLeft: 2}} href="https://www.youtube.com/@soyLCCUnison" color="inherit" underline="none"
+>Youtube</Link><br/>
+            </Box>
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Typography variant="h6" color="inherit" style={{ color: textColor }}>
-              <LocalPhoneIcon/> Contacto
+            <Box display="flex" alignItems="center" justifyContent="center" margin={0} >
+              <LocalPhoneIcon style={{paddingRight: 3}}/> Contacto
+            </Box>  
             </Typography>
             <Typography variant="body2" color="inherit" style={{ color: textColor }}>
               Tel y Fax
@@ -48,19 +72,27 @@ function Footer({
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <Typography variant="h6" color="inherit" style={{ color: textColor }}>
-              <LocationOnIcon/> Direccion
+          <Box display="flex" alignItems="center" justifyContent="center" margin={0} >
+          <LocationOnIcon/> <Typography variant="h6" color="inherit" style={{ color: textColor ,paddingBottom:0}}>
+               Dirección
             </Typography>
+          </Box>  
+            
             <Typography variant="body2" color="inherit" style={{ color: textColor }}>
-              Edificio 3K-4. Ciencias de la Computacion, Boulevard Luis Encinas y Rosales, s/n, Col. Centro, Hermosillo, Sonora. CP: 83000
+              Edificio 3K-4. Ciencias de la Computación, Boulevard Luis Encinas y Rosales, s/n, Col. Centro, Hermosillo, Sonora. CP: 83000
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Typography variant="h6" color="inherit" style={{ color: textColor }}>
-              <EmailIcon/> Correo
+            <Box display="flex" alignItems="center" justifyContent="center" margin={0} >
+            <EmailIcon/> <Typography variant="h6" color="inherit" style={{ color: textColor ,paddingLeft:3}}>
+                Correo
+                </Typography>
+            </Box>  
+               
             </Typography>
             <Typography variant="body2" color="inherit" style={{ color: textColor }}>
-              computacion@mat.uson.mx
+              computacion@uson.mx
             </Typography>
           </Grid>
         </Grid>

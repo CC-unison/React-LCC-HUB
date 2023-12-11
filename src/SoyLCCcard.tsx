@@ -15,7 +15,7 @@ export default function SoyLCC({foto, titulo, link}: MyComponentProps) {
         window.open(link, '_blank')
     }
   return (
-    <Card sx={{ minWidth: 345, minHeight:345, maxWidth: 345, mr:2}} onClick={handleClick}>
+    <Card sx={{ minWidth: 448, maxWidth: 800, minHeight: 500, position: 'relative' }} onClick={handleClick}>
       <CardActionArea>
         <CardMedia
           component="img"
