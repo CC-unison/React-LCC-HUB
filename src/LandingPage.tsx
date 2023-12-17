@@ -11,6 +11,7 @@ import LCCIcon from "./assets/logo-lcc-blanco.svg"
 import { CssBaseline, Divider, Grid } from "@mui/material";
 import SoyLCC from './SoyLCCcard';
 import { useMsal } from "@azure/msal-react";
+import { useIsAuthenticated } from "@azure/msal-react";
 import {NoticiasCard} from './noticiasCard';
 import { FreeMode, Mousewheel, Navigation, Scrollbar } from 'swiper/modules';
 import { Pagination } from "swiper/modules";
@@ -31,6 +32,8 @@ export default function LandingPage() {
   const [galeria, setGaleria] = React.useState<any[]>([]);
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [openLogin, setOpenLogin] = React.useState(false);
+  const isAuthenticated = useIsAuthenticated();
+  const [usuario, setUsuario] = React.useState<string>("");
 
   React.useEffect(() => {
     function handleScroll() {
@@ -89,18 +92,24 @@ export default function LandingPage() {
     setAnchorEl(null);
   };
   const handleLogin = async () => {
-    if(loggedIn){
+    if(isAuthenticated){
 
     }else {
     try {
-      await instance.loginPopup(loginRequest);
+      await instance.loginPopup(loginRequest).then((response)=>{
+        instance.setActiveAccount(response.account);
+      });
       setLogin(true);
-      console.log(loggedIn)
     } catch (error) {
       console.log(error);
     }}
+    console.log(isAuthenticated)
+    setUsuario(instance.getActiveAccount()?.name!);
   };
-
+  const test = () => {
+      console.log(isAuthenticated)
+      console.log(instance.getActiveAccount());
+  }
   return (
     <div>
       <Box sx={{ flexGrow: 1, color: "white" }}>
@@ -112,9 +121,9 @@ export default function LandingPage() {
               LCC HUB
             </Typography>
             <Button color="inherit" sx={{ m: 1 }}>Soy LCC</Button>
-            <Button color="inherit" sx={{ m: 1 }}>Noticias</Button>
+            <Button color="inherit" sx={{ m: 1 }} onClick={test}>Noticias</Button>
             <Button color="inherit" sx={{ m: 1 }}>Galería</Button>
-            {loggedIn ? (
+            {isAuthenticated ? (
               <div>
                 <IconButton
                   size="large"
@@ -141,7 +150,8 @@ export default function LandingPage() {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  <Link to={"dashboard"}><MenuItem>Dashboard</MenuItem></Link>
+                  <MenuItem>{usuario}</MenuItem>
+                  <Link to={"dashboard"} style={{ textDecoration: 'none' }} ><MenuItem>Dashboard</MenuItem></Link>
                   <MenuItem onClick={handleLogOut}>Cerrar sesión</MenuItem>
                 </Menu>
               </div>
@@ -157,7 +167,7 @@ export default function LandingPage() {
           <h2>Seguimiento de trayectoria <br /> académica de alumnos de LCC</h2>
           
 
-          {loggedIn?
+          {isAuthenticated?
           (<Link to={"dashboard"}><Button variant="contained" sx={{
             p: 1, minWidth: "100%", bgcolor: "background.paper", color: "text.primary", '&:hover': {
               backgroundColor: '#f5f5f5',

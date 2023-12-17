@@ -2,11 +2,14 @@ import React from 'react';
 import { AppBar, Box, Button, Container, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material';
 import Header from './header';
 import LCCIcon from "./assets/logo-lcc-blanco.svg"
+import { useIsAuthenticated } from "@azure/msal-react";
 import { AccountCircle } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { useMsal } from '@azure/msal-react';
 
 const Dashboard: React.FC = () => {
+    const { instance } = useMsal();
+    const isAuthenticated = useIsAuthenticated();
     const [isScrolled, setIsScrolled] = React.useState(false);
     const loginRequest = {
         scopes: ["User.Read"], // Define necessary scopes
@@ -16,7 +19,6 @@ const Dashboard: React.FC = () => {
     const handleClose = () => {
         setAnchorEl(null);
       };
-      const { instance } = useMsal();
     const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
       };
@@ -37,6 +39,8 @@ const Dashboard: React.FC = () => {
         }}
       };
     React.useEffect(() => {
+        console.log(isAuthenticated)
+        console.log(instance.getActiveAccount());
         function handleScroll() {
           // Check the scroll position to determine if the user has scrolled
           if (window.scrollY > 50) {
