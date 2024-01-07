@@ -6,6 +6,8 @@ import { useLocation, Navigate } from "react-router-dom"
 import LCCIcon from "./assets/logo-lcc-blanco.svg"
 import { useIsAuthenticated } from "@azure/msal-react";
 import { AccountCircle } from '@mui/icons-material';
+import { db } from "./firebase"
+import { collection, query, orderBy, onSnapshot, where } from "firebase/firestore";
 import { Link } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import { red, green } from '@mui/material/colors';
@@ -24,6 +26,8 @@ const Dashboard: React.FC = () => {
     const loginRequest = {
         scopes: ["User.Read"], // Define necessary scopes
     };
+    const [userID, setID]=React.useState<string>("");
+    const [userInfo, setUserinfo] = React.useState<any[]>([]);
     const [loggedIn, setLogin] = React.useState<boolean>(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const handleClose = () => {
@@ -51,13 +55,25 @@ const Dashboard: React.FC = () => {
             }
         }
     };
+
     React.useEffect(() => {
-        console.log(isAuthenticated)
-        console.log(instance.getActiveAccount());
-
+        /**/
+        console.log(instance.getActiveAccount()?.username!);
+        const match = instance.getActiveAccount()?.username!.match(/a(\d+)@unison\.mx/);
+        setID(match![1]);
+        const q = query(collection(db, "students"), where("studentID", "==", Number(match![1])));
+        console.log(match![1])
+        onSnapshot(q, (querySnapshot) => {
+          setUserinfo(querySnapshot.docs.map((doc) => ({
+            ...doc.data(),
+          })) as any[]); // Provide a type annotation to specify the type
+        })
+        console.log(userInfo);
     }, []);
-
-
+    const test = () => {
+        console.log(userInfo);
+        console.log(Math.round(Number(userInfo[0]?.approvedCredits)/Number(userInfo[0]?.requiredCredits) * 100))
+    }
     const redBorder = {
         borderColor: red[500],
         borderWidth: 2,
@@ -128,11 +144,13 @@ const Dashboard: React.FC = () => {
                     </Toolbar>
                 </AppBar>
             </Box>
+            
             <Box sx={{ display: "flex", flexDirection: 'column', color: "black" }}>
                 <div style={{ "textAlign": "left", "marginLeft": "30px", "marginTop": "80px", "marginBottom": "0px" }}>
                     <h2>Resumen</h2>
                 </div>
                 <Divider className="separator" sx={{ ml: "30px", width: "95%", "marginBottom": "25px" }} />
+                <Button color="primary" sx={{ m: 1 }} onClick={test}>test</Button>
                 <Grid container spacing={2} justifyContent="space-evenly">
                     {/* Card 1 */}
                     <Grid item>
@@ -140,7 +158,7 @@ const Dashboard: React.FC = () => {
                             <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                 {/* Your card content */}
                                 <h2>Porcentaje de avance</h2>
-                                <h1>92%</h1>
+                                <h1>{Math.round(Number(userInfo[0]?.approvedCredits)/Number(userInfo[0]?.requiredCredits) * 100)}%</h1>
                             </CardContent>
                         </Card>
                     </Grid>
@@ -151,7 +169,7 @@ const Dashboard: React.FC = () => {
                             <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                 {/* Your card content */}
                                 <h2>Créditos culturest</h2>
-                                <h1>4.0</h1>
+                                <h1>{userInfo[0]?.cultCredits}</h1>
                             </CardContent>
                         </Card>
                     </Grid>
