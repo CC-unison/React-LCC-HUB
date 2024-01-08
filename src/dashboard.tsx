@@ -7,7 +7,8 @@ import LCCIcon from "./assets/logo-lcc-blanco.svg"
 import { useIsAuthenticated } from "@azure/msal-react";
 import { AccountCircle } from '@mui/icons-material';
 import { db } from "./firebase"
-import { collection, query, orderBy, onSnapshot, where } from "firebase/firestore";
+import { query, collection, where, getDocs } from "firebase/firestore";
+
 import { Link } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import { red, green } from '@mui/material/colors';
@@ -30,6 +31,7 @@ const Dashboard: React.FC = () => {
     const [userInfo, setUserinfo] = React.useState<any[]>([]);
     const [loggedIn, setLogin] = React.useState<boolean>(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [map, setMap] = React.useState<any[]>([]); 
     const handleClose = () => {
         setAnchorEl(null);
     };
@@ -55,21 +57,43 @@ const Dashboard: React.FC = () => {
             }
         }
     };
-
-    React.useEffect(() => {
-        /**/
-        console.log(instance.getActiveAccount()?.username!);
-        const match = instance.getActiveAccount()?.username!.match(/a(\d+)@unison\.mx/);
-        setID(match![1]);
-        const q = query(collection(db, "students"), where("studentID", "==", Number(match![1])));
-        console.log(match![1])
-        onSnapshot(q, (querySnapshot) => {
-          setUserinfo(querySnapshot.docs.map((doc) => ({
-            ...doc.data(),
-          })) as any[]); // Provide a type annotation to specify the type
-        })
-        console.log(userInfo);
-    }, []);
+    const fetchData = async () => {
+        try {
+          const match = instance.getActiveAccount()?.username!.match(/a(\d+)@unison\.mx/);
+          const q = query(collection(db, 'students'), where('studentID', '==', Number(match![1])));
+          console.log(match![1]);
+    
+          const querySnapshot = await getDocs(q);
+    
+          setUserinfo(
+            querySnapshot.docs.map((doc) => ({
+              ...doc.data(),
+            }))
+          );
+    
+          // Make a second query using the result from the first query
+          const secondQueryResult = await makeSecondQuery(querySnapshot.docs.map((doc) => doc.data()));
+          console.log('Second Query Result:', secondQueryResult);
+          setMap(secondQueryResult[0].semesters)
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+    
+      const makeSecondQuery = async (userInfo: Record<string, any>[]) => {
+        // Assuming you use userInfo to construct the second query
+        // Replace this with your actual second query logic
+        const secondQ = query(collection(db, 'curriculumMaps'), where('map', '==', userInfo[0]?.studyPlan));
+        const secondQuerySnapshot = await getDocs(secondQ);
+        return secondQuerySnapshot.docs.map((doc) => ({
+          ...doc.data(),
+        })) as any[]; // Adjust the type as needed
+      };
+    
+      
+      React.useEffect(() => {
+        fetchData();
+      }, []);
     const test = () => {
         console.log(userInfo);
         console.log(Math.round(Number(userInfo[0]?.approvedCredits)/Number(userInfo[0]?.requiredCredits) * 100))
@@ -95,6 +119,45 @@ const Dashboard: React.FC = () => {
         display: 'flex', alignItems: 'center', justifyContent: 'center', height: 80, width: 200 
       };
       
+      
+      const curriculumArray: string[] = [
+        "6881-6886-9100-9440-9441-0120-0123",
+        "6884-8151-9102-9442-9443-9444-0121",
+        "6889-6895-8156-9282-9447-9448",
+        "8161-9445-9446-9449-9450-0124-Selec",
+        "9156-9454-9451-9452-9453-Selec",
+        "9458-9455-9456-9457-Esp-Intg",
+        "9459-9460-9461-Esp-Esp-Intg",
+        "Esp-Esp-Intg",
+      ];
+      
+      interface SubjectCardProps {
+        code: string;
+      }
+      
+      const SubjectCard: React.FC<SubjectCardProps> = ({ code }) => (
+        <Grid item>
+          <Card style={greenBorder}>
+            <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+              <Typography variant="h9" align="center">
+                {code}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      );
+      
+      const CurriculumMap: React.FC = () => (
+        <Grid container spacing={2}>
+          {curriculumArray.map((semester, semesterIndex) => (
+            <Grid container item key={semesterIndex} justifyContent="center" spacing={2}>
+              {semester.split('-').map((subjectCode, subjectIndex) => (
+                <SubjectCard key={subjectIndex} code={subjectCode} />
+              ))}
+            </Grid>
+          ))}
+        </Grid>
+      );
 
     return (
         <Box sx={{ flexGrow: 1, width: "100%", backgroundColor: "white" }}>
@@ -150,7 +213,6 @@ const Dashboard: React.FC = () => {
                     <h2>Resumen</h2>
                 </div>
                 <Divider className="separator" sx={{ ml: "30px", width: "95%", "marginBottom": "25px" }} />
-                <Button color="primary" sx={{ m: 1 }} onClick={test}>test</Button>
                 <Grid container spacing={2} justifyContent="space-evenly">
                     {/* Card 1 */}
                     <Grid item>
@@ -180,7 +242,7 @@ const Dashboard: React.FC = () => {
                             <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                 {/* Your card content */}
                                 <h2>Nivel de inglés</h2>
-                                <h1>4</h1>
+                                <h1>{parseInt(userInfo[0]?.levelAndCycleEnglish.split("-")[0])}</h1>
                             </CardContent>
                         </Card>
                     </Grid>
@@ -192,7 +254,7 @@ const Dashboard: React.FC = () => {
 
             </div>
             <Divider className="separator" sx={{ ml: "30px", width: "95%", "marginBottom": "20px" }} />
-            {servicio ?
+            {Math.round(Number(userInfo[0]?.approvedCredits)/Number(userInfo[0]?.requiredCredits) * 100)>70 ?
                 (<div style={{ "textAlign": "left", "marginLeft": "30px", "marginTop": "30px", "color": "black" }}>
                     <p> Cumples con suficientes créditos para comenzar tu servicio social, aquí se encuentran algunos proyectos recomendados:</p>
                     <TableContainer component={Paper}>
@@ -228,7 +290,9 @@ const Dashboard: React.FC = () => {
 
                 )
                 :
-                (<p>No cumples con la cantidad de créditos necesarios para comenzar tu servicio social.</p>)}
+                (<div style={{ "textAlign": "left", "marginLeft": "30px", "marginTop": "30px", "color": "black" }}>
+                <p> El servicio social solo se encuentra disponible si tienes más del 70% de tus créditos y si has asistido a la platica de inducción.</p>
+            </div>)}
             <Divider className="separator" sx={{ ml: "30px", width: "95%", "marginBottom": "25px", "marginTop": "25px" }} />
             <div style={{ "textAlign": "left", "marginLeft": "30px", "marginTop": "30px", "color": "black" }}>
                 <h2>Mi trayectoria</h2>
@@ -250,142 +314,7 @@ const Dashboard: React.FC = () => {
                     </Table>
                 </TableContainer>
                 <h3>Progreso:</h3>
-                <Grid container spacing={2}>
-                    <Grid container item justifyContent="center" spacing={2}>
-                        <Grid item>
-                        <Card style={greenBorder}>
-                            <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-                                <Typography variant = "h9" align="center">Calculo diferencial e Integral</Typography>
-                        </CardContent>
-                        </Card>
-                        </Grid>
-                        
-                        <Grid item>
-                        <Card style={greenBorder}>
-                            <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-                                <Typography variant = "h9" align="center">Calculo diferencial e Integral II</Typography>
-                        </CardContent>
-                        </Card>
-                        </Grid>
-                        
-                        <Grid item>
-                        <Card style={greenBorder}>
-                            <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-                                <Typography variant = "h9" align="center">Calculo diferencial e Integral III</Typography>
-                        </CardContent>
-                        </Card>
-                        </Grid>
-
-                        <Grid item>
-                        <Card style={greenBorder}>
-                            <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-                                <Typography variant = "h9" align="center">Probabilidad</Typography>
-                        </CardContent>
-                        </Card>
-                        </Grid>
-
-                        <Grid item>
-                        <Card style={greenBorder}>
-                            <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-                                <Typography variant = "h9" align="center">Estadistica</Typography>
-                        </CardContent>
-                        </Card>
-                        </Grid>
-
-                        <Grid item>
-                        <Card style={greenBorder}>
-                            <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-                                <Typography variant = "h9" align="center">Optativa</Typography>
-                        </CardContent>
-                        </Card>
-                        </Grid>
-
-                        <Grid item>
-                        <Card style={greenBorder}>
-                            <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-                                <Typography variant = "h9" align="center">Optativa</Typography>
-                        </CardContent>
-                        </Card>
-                        </Grid>
-
-                        <Grid item>
-                        <Card style={blackBorder}>
-                            <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-                                <Typography variant = "h9" align="center">Optativa</Typography>
-                        </CardContent>
-                        </Card>
-                        </Grid>
-                    </Grid>
-                    {/* cluster*/}
-                    <Grid container item justifyContent="center" spacing={2}>
-                        <Grid item>
-                        <Card style={greenBorder}>
-                            <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-                                <Typography variant = "h9" align="center">Geometría Analítica</Typography>
-                        </CardContent>
-                        </Card>
-                        </Grid>
-                        
-                        <Grid item>
-                        <Card style={greenBorder}>
-                            <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-                                <Typography variant = "h9" align="center">Álgebra Lineal I</Typography>
-                        </CardContent>
-                        </Card>
-                        </Grid>
-                        
-                        <Grid item>
-                        <Card style={greenBorder}>
-                            <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-                                <Typography variant = "h9" align="center">Ecuaciones Diferenciales I</Typography>
-                        </CardContent>
-                        </Card>
-                        </Grid>
-
-                        <Grid item>
-                        <Card style={greenBorder}>
-                            <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-                                <Typography variant = "h9" align="center">Optativa Humanidades</Typography>
-                        </CardContent>
-                        </Card>
-                        </Grid>
-
-                        <Grid item>
-                        <Card style={greenBorder}>
-                            <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-                                <Typography variant = "h9" align="center">Analisis Lógico</Typography>
-                        </CardContent>
-                        </Card>
-                        </Grid>
-
-                        <Grid item>
-                        <Card style={greenBorder}>
-                            <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-                                <Typography variant = "h9" align="center">Inteligencia Artificial</Typography>
-                        </CardContent>
-                        </Card>
-                        </Grid>
-
-                        <Grid item>
-                        <Card style={greenBorder}>
-                            <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-                                <Typography variant = "h9" align="center">Optativa</Typography>
-                        </CardContent>
-                        </Card>
-                        </Grid>
-
-                        <Grid item>
-                        <Card style={redBorder}>
-                            <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-                                <Typography variant = "h9" align="center">Optativa</Typography>
-                        </CardContent>
-                        </Card>
-                        </Grid>
-
-
-                    
-                    </Grid>
-                </Grid>
+                <CurriculumMap/>
             </div>
         <br/><br/><br/><br/><br/>
         </Box>
