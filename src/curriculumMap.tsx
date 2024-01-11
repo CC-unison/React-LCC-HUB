@@ -21,7 +21,6 @@ interface SubjectCardProps {
 }
 
 const SubjectCard: React.FC<SubjectCardProps> = ({ code }) => (
-  <Grid item>
     <Card style={greenBorder}>
       <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
         <Typography variant="h9" align="center">
@@ -29,13 +28,12 @@ const SubjectCard: React.FC<SubjectCardProps> = ({ code }) => (
         </Typography>
       </CardContent>
     </Card>
-  </Grid>
 );
 
 const CurriculumMap: React.FC = () => (
-    <Grid container spacing={2}>
+    <Grid container direction="row" justifyContent="center" spacing={2}>
       {curriculumArray.map((semester, semesterIndex) => (
-        <Grid container item key={semesterIndex} justifyContent="center" spacing={2}>
+        <Grid item key={semesterIndex} direction={"column"} justifyContent="center" xs={1.1}>
           {semester.split('-').map((subjectCode, subjectIndex) => (
             <SubjectCard key={subjectIndex} code={subjectCode} />
           ))}
