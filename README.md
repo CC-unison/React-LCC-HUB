@@ -1,3 +1,35 @@
+# Contributing
+
+This project must trascend us to serve our community. We strive for clarity to newcomers.
+
+### Development workflow
+
+To get started with this project run `npm install` in the root directory to install the required dependencies for each package in `./package.json`. They will be downloaded into `./node_modules`.
+
+
+### Scripts
+
+The `package.json` file contains various scripts for common tasks:
+
+To start the development server:
+
+``` shell
+npm run dev
+```
+
+### Suggested commit message convention
+
+We can follow the [conventional commits specification](https://www.conventionalcommits.org/en) for our commit messages:
+
+- `fix`: bug fixes, e.g. fix crash due to deprecated method.
+- `feat`: new features, e.g. add new method to the module.
+- `refactor`: code refactor, e.g. migrate from class components to hooks.
+- `docs`: changes into documentation, e.g. add usage example for the module..
+- `test`: adding or updating tests, e.g. add integration tests using detox.
+- `chore`: tooling changes, e.g. change CI config.
+
+---
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
