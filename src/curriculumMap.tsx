@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Card, CardContent, Typography } from '@mui/material';
+import { Grid, Card, CardContent, Typography, TableContainer, TableHead, TableBody, TableRow, TableCell} from '@mui/material';
 
 const greenBorder: React.CSSProperties = {
   border: '2px solid green',
@@ -39,13 +39,15 @@ const SubjectCard: React.FC<SubjectCardProps> = ({ code }) => (
           Creditos
         </Typography>
         <Typography variant="h9" align="center">
-          {code in Eje ? mapEje2str.get(code): code}
+          {code in Eje ? mapEje2str.get(code): String(code).padStart(4, '0')}
         </Typography>
       </CardContent>
     </Card>
 );
 
 const CurriculumMap: React.FC = () => (
+  <>
+    <CurriculumMapv2 />
   <Grid container direction="row" justifyContent="center" spacing={2} columns={semesterProgram.length}>
       {semesterProgram.map((semester, semesterIndex) => (
         <Grid item key={semesterIndex} direction={"column"} justifyContent="center">
@@ -55,6 +57,38 @@ const CurriculumMap: React.FC = () => (
         </Grid>
       ))}
     </Grid>
+  </>
   );
+
+const CurriculumMapv2: React.FC = () => (
+  <TableContainer>
+    <TableHead>
+      <TableRow>
+        {semesterProgram.map((_, i) => (
+          <TableCell>
+            <Typography>
+              {i+1}
+            </Typography>
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+    <TableBody>
+        <TableRow>
+          {semesterProgram.map((semester, semesterIndex) => (
+            <TableCell>
+              <Grid container direction={"column"}>
+                  {semester.map((subjectCode, subjectIndex) => (
+                  <Grid item key={semesterIndex} direction={"column"} justifyContent="center">
+                      <SubjectCard key={subjectIndex} code={subjectCode} />
+                  </Grid>
+                  ))};
+              </Grid>
+            </TableCell>
+          ))};
+        </TableRow>
+    </TableBody>
+  </TableContainer>
+)
 
 export default CurriculumMap;
