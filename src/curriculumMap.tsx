@@ -33,13 +33,31 @@ async function generateSemesterMapDict(program: string[][]) {
   return programDict;
 }
 
+function getColor(code, dict) {
+  switch (dict[code].branch) {
+      case "Basico":
+      return "white";
+      case "Comun":
+      return "yellow";
+      case "Profesional":
+      return "orange";
+      case "Especializante":
+      return "green";
+      case "Integrador":
+      return "purple";
+      default:
+      console.log(dict[code]);
+      return "black"
+  }
+}
+
 interface SubjectCardProps {
   code: number,
   dict,
 }
 
 const SubjectCard: React.FC<SubjectCardProps> = ({ code, dict }) => (
-    <Card sx={{width: 140, height: 75}}>
+  <Card style={{backgroundColor: getColor(code, dict)}} sx={{width: 140, height: 75}}>
       <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
         <Typography sx={{fontFamily: 'Arial', fontSize: 10, alignSelf: 'flex-end'}}>
           {dict[code].credits}
