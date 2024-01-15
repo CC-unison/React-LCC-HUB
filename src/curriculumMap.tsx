@@ -1,7 +1,8 @@
 import React from 'react';
 import { Grid, Card, CardContent, Typography, TableContainer, TableHead, TableBody, TableRow, TableCell} from '@mui/material';
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, getDocs, collection } from "firebase/firestore";
 import { db } from "./firebase";
+import firestore from "./"
 
 async function getSubjectInfo(key: string) {
     const docRef = doc(db, "subjects", key);
@@ -23,8 +24,27 @@ function generateSemesterMap(inferior_map: string[]) {
   return semesterProgram;
 }
 
+async function generateSemesterMapDict(program: string[][]) {
+  const programDict = {}
+  const flattenProgram = new Set([].concat(...program));
+  const docSnap = await getDocs(collection(db, "subjects"));
+  docSnap.forEach((doc) => {
+    if (flattenProgram.has(doc.id)) {
+      programDict[doc.id] = {
+        "branch": doc.data().branch,
+        "credits": doc.data().credits,
+        "subjectName": doc.data().subjectName,
+      }
+    }
+  });
+  return programDict;
+}
+
+
 const LCCMap = await getSemesterMap("2052");
 const semesterProgram: string[][] = generateSemesterMap(LCCMap.semesters)
+const programDict = await generateSemesterMapDict(semesterProgram);
+console.log(programDict["Esp"])
 
 
 interface SubjectCardProps {
@@ -38,7 +58,7 @@ const SubjectCard: React.FC<SubjectCardProps> = ({ code }) => (
           {code}
         </Typography>
         <Typography sx={{fontFamili: 'Arial', fontSize: 10, justifyContent: 'center'}}>
-          Introduccion a las Cs. de la computacion
+          {programDict[code].subjectName}
         </Typography>
       </CardContent>
     </Card>
