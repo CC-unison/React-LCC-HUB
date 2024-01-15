@@ -1,14 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Grid, Card, CardContent, Typography, TableContainer, TableHead, TableBody, TableRow, TableCell} from '@mui/material';
 import { doc, getDoc, getDocs, collection } from "firebase/firestore";
 import { db } from "./firebase";
-import firestore from "./"
-
-async function getSubjectInfo(key: string) {
-    const docRef = doc(db, "subjects", key);
-    const docSnap = await getDoc(docRef);
-    return docSnap.data();
-}
 
 async function getSemesterMap(key: string) {
     const docRef = doc(db,"curriculumMaps", key);
@@ -40,25 +33,19 @@ async function generateSemesterMapDict(program: string[][]) {
   return programDict;
 }
 
-
-const LCCMap = await getSemesterMap("2052");
-const semesterProgram: string[][] = generateSemesterMap(LCCMap.semesters)
-const programDict = await generateSemesterMapDict(semesterProgram);
-console.log(programDict["Esp"])
-
-
 interface SubjectCardProps {
-  code: number;
+  code: number,
+  dict,
 }
 
-const SubjectCard: React.FC<SubjectCardProps> = ({ code }) => (
+const SubjectCard: React.FC<SubjectCardProps> = ({ code, dict }) => (
     <Card sx={{width: 140, height: 75}}>
       <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
         <Typography sx={{fontFamily: 'Arial', fontSize: 10, alignSelf: 'flex-end'}}>
-          {code}
+          {dict[code].credits}
         </Typography>
         <Typography sx={{fontFamili: 'Arial', fontSize: 10, justifyContent: 'center'}}>
-          {programDict[code].subjectName}
+          {dict[code].subjectName}
         </Typography>
       </CardContent>
     </Card>
@@ -74,7 +61,24 @@ const SemesterHeadingCard: React.FC<SubjectCardProps> = ({ code }) => (
     </Card>
 );
 
-const CurriculumMap: React.FC = () => (
+const CurriculumMap: React.FC = () => {
+
+  const [semesterProgram, setSemesterProgram] = useState([]);
+  const [programDict, setProgramDict] = useState({});
+
+  useEffect(() => {
+    const prepareData = async () => {
+       const LCCMap = await getSemesterMap("2052");
+       const semesterProgram: string[][] = generateSemesterMap(LCCMap.semesters)
+       const programDict = await generateSemesterMapDict(semesterProgram);
+       setSemesterProgram(semesterProgram);
+       setProgramDict(programDict);
+    }
+
+    prepareData();
+  }, []);
+
+  return (
   <TableContainer sx={{display: 'flex', justifyContent: 'center', flexDirection: 'column'}}>
     <TableHead sx={{display: 'flex',  justifyContent: 'space-around',}}>
       <TableRow>
@@ -92,7 +96,7 @@ const CurriculumMap: React.FC = () => (
             <Grid container direction={"column"} spacing={1.5} justifyContent={'flex-start'}>
                   {semester.map((subjectCode, subjectIndex) => (
                   <Grid item key={semesterIndex} justifyContent="center">
-                      <SubjectCard key={subjectIndex} code={subjectCode} />
+                      <SubjectCard key={subjectIndex} code={subjectCode} dict={programDict} />
                   </Grid>
                   ))}
               </Grid>
@@ -101,7 +105,8 @@ const CurriculumMap: React.FC = () => (
         </TableRow>
     </TableBody>
   </TableContainer>
-)
+);
+}
 
 /* TODO
    - Semester up to top
