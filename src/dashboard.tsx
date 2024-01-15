@@ -7,7 +7,7 @@ import LCCIcon from "./assets/logo-lcc-blanco.svg"
 import { useIsAuthenticated } from "@azure/msal-react";
 import { AccountCircle } from '@mui/icons-material';
 import { db } from "./firebase"
-import { query, collection, where, getDocs } from "firebase/firestore";
+import { query, collection, where, getDocs, doc, getDoc} from "firebase/firestore";
 
 import { Link } from 'react-router-dom';
 import Card from '@mui/material/Card';
@@ -18,6 +18,9 @@ import Grid from '@mui/material/Grid';
 import { useMsal } from '@azure/msal-react';
 import { useNavigate } from 'react-router-dom';
 import CurriculumMap from './curriculumMap'
+
+
+
 const Dashboard: React.FC = () => {
 
     const servicio = true;
@@ -31,8 +34,7 @@ const Dashboard: React.FC = () => {
     const [userID, setID]=React.useState<string>("");
     const [userInfo, setUserinfo] = React.useState<any[]>([]);
     const [loggedIn, setLogin] = React.useState<boolean>(false);
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const [map, setMap] = React.useState<any[]>([]); 
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
     const handleClose = () => {
         setAnchorEl(null);
     };
@@ -71,26 +73,12 @@ const Dashboard: React.FC = () => {
               ...doc.data(),
             }))
           );
-    
-          // Make a second query using the result from the first query
-          const secondQueryResult = await makeSecondQuery(querySnapshot.docs.map((doc) => doc.data()));
-          console.log('Second Query Result:', secondQueryResult);
-          setMap(secondQueryResult[0].semesters)
+
         } catch (error) {
           console.error('Error fetching data:', error);
         }
       };
-    
-      const makeSecondQuery = async (userInfo: Record<string, any>[]) => {
-        // Assuming you use userInfo to construct the second query
-        // Replace this with your actual second query logic
-        const secondQ = query(collection(db, 'curriculumMaps'), where('map', '==', userInfo[0]?.studyPlan));
-        const secondQuerySnapshot = await getDocs(secondQ);
-        return secondQuerySnapshot.docs.map((doc) => ({
-          ...doc.data(),
-        })) as any[]; // Adjust the type as needed
-      };
-    
+
       
       React.useEffect(() => {
         fetchData();
