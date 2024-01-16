@@ -36,20 +36,35 @@ async function generateSemesterMapDict(program: string[][]) {
 function getColor(code, dict) {
   switch (dict[code].branch) {
       case "Basico":
-      return "white";
+      return "#E8EEF7";
       case "Comun":
-      return "yellow";
+      return "#FFFF66";
       case "Profesional":
-      return "orange";
+      return "#FF9966";
       case "Especializante":
-      return "green";
+      return "#99FF66";
       case "Integrador":
-      return "purple";
+      return "#9966FF";
       default:
       console.log(dict[code]);
-      return "black"
+      return "white"
   }
 }
+
+function romanize (num) {
+    if (isNaN(num))
+        return NaN;
+    var digits = String(+num).split(""),
+        key = ["","C","CC","CCC","CD","D","DC","DCC","DCCC","CM",
+               "","X","XX","XXX","XL","L","LX","LXX","LXXX","XC",
+               "","I","II","III","IV","V","VI","VII","VIII","IX"],
+        roman = "",
+        i = 3;
+    while (i--)
+        roman = (key[+digits.pop() + (i * 10)] || "") + roman;
+    return Array(+digits.join("") + 1).join("M") + roman;
+}
+
 
 interface SubjectCardProps {
   code: number,
@@ -60,20 +75,20 @@ const SubjectCard: React.FC<SubjectCardProps> = ({ code, dict }) => (
   <Card style={{backgroundColor: getColor(code, dict)}} sx={{width: 140, height: 75}}>
       <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
         <Typography sx={{fontFamily: 'Arial', fontSize: 10, alignSelf: 'flex-end'}}>
-          {dict[code].credits}
+          {dict[code].credits || " "}
         </Typography>
-        <Typography sx={{fontFamili: 'Arial', fontSize: 10, justifyContent: 'center'}}>
+        <Typography sx={{fontFamili: 'Arial', fontSize: 10, textAlign: 'center'}}>
           {dict[code].subjectName}
         </Typography>
       </CardContent>
     </Card>
 );
 
-const SemesterHeadingCard: React.FC<SubjectCardProps> = ({ code }) => (
+const SemesterHeadingCard: React.FC<SubjectCardProps> = ({ index }) => (
     <Card sx={{width: 140, height: 75}}>
       <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
         <Typography align="center">
-          {code}
+          {romanize(index)}
         </Typography>
       </CardContent>
     </Card>
@@ -102,7 +117,7 @@ const CurriculumMap: React.FC = () => {
       <TableRow>
         {semesterProgram.map((_, i) => (
           <TableCell>
-            <SemesterHeadingCard code={i+1} />
+            <SemesterHeadingCard index={i+1} />
           </TableCell>
         ))}
       </TableRow>
