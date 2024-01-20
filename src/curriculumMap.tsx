@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Card, CardContent, CardHeader, Typography, TableContainer, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
 import { doc, getDoc, getDocs, collection } from "firebase/firestore";
 import { db } from "./firebase";
-import { Container, Paper } from "@mui/material"
+import { Container, Divider } from "@mui/material"
 import UniversidadSonora from "./assets/Escudo_Unison.png"
 import LccLogo from "./assets/logo-lcc-letras.svg"
 
@@ -75,27 +75,32 @@ interface SubjectCardProps {
 }
 
 const SubjectCard: React.FC<SubjectCardProps> = ({ code, dict }) => (
-    <Card style={{ backgroundColor: getColor(code, dict) }} sx={{ width: 140, height: 75 }}>
-        <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-            <Typography sx={{ fontFamily: 'Arial', fontSize: 10, alignSelf: 'flex-end' }}>
-                {dict[code].credits || " "}
+    <Card style={{ backgroundColor: getColor(code, dict) }}
+        sx={{
+            width: 120,
+            height: 60,
+            borderRadius: '0',
+            border: '1px solid black'
+        }}>
+        <CardContent sx={{ margin: 0, p: 0.3 }}>
+            <Typography textAlign='end' fontSize={10} sx={{ p: 0, marginRight: 1 }} >
+                {dict[code].credits || 0}
             </Typography>
-            <Typography sx={{ fontFamili: 'Arial', fontSize: 10, textAlign: 'center' }}>
+            {dict[code].subjectName != "Integrador" ?
+                <Divider sx={{ borderBottom: '1px solid black', marginRight: 1, marginLeft: 1 }} />
+                : <></>}
+            {["Integrador", "Especializante"].includes(dict[code].subjectName) ?
+                <Typography textAlign='center' fontSize={10}>
+                    {"OPTATIVA"}
+                </Typography>
+                : <></>}
+            <Typography textAlign='center' fontSize={10}>
                 {dict[code].subjectName}
             </Typography>
         </CardContent>
-    </Card>
+    </Card >
 );
 
-const SemesterHeadingCard: React.FC<SubjectCardProps> = ({ index }) => (
-    <Card sx={{ width: 140, height: 75 }}>
-        <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-            <Typography align="center">
-                {romanize(index)}
-            </Typography>
-        </CardContent>
-    </Card>
-);
 
 const CurriculumMap: React.FC = () => {
 
@@ -160,23 +165,25 @@ const CurriculumMap: React.FC = () => {
                         </Grid>
                     </Grid>
                 </Container>
-                <TableContainer sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
-                    <TableHead sx={{ display: 'flex', justifyContent: 'space-around', }}>
+                <TableContainer>
+                    <TableHead>
                         <TableRow>
                             {semesterProgram.map((_, i) => (
                                 <TableCell>
-                                    <SemesterHeadingCard index={i + 1} />
+                                    <Typography variant="h5" align="center" style={{ fontFamily: "Times New Roman, Times, Times" }}>
+                                        {romanize(i + 1)}
+                                    </Typography>
                                 </TableCell>
                             ))}
                         </TableRow>
                     </TableHead>
-                    <TableBody sx={{ display: 'flex', justifyContent: 'space-around', }}>
+                    <TableBody>
                         <TableRow>
                             {semesterProgram.map((semester, semesterIndex) => (
-                                <TableCell>
-                                    <Grid container direction={"column"} spacing={1.5} justifyContent={'flex-start'}>
+                                <TableCell sx={{ verticalAlign: 'top', margin: 0, p: 1 }}>
+                                    <Grid container spacing={1.3}>
                                         {semester.map((subjectCode, subjectIndex) => (
-                                            <Grid item key={semesterIndex} justifyContent="center">
+                                            <Grid item key={semesterIndex}>
                                                 <SubjectCard key={subjectIndex} code={subjectCode} dict={programDict} />
                                             </Grid>
                                         ))}
