@@ -74,33 +74,46 @@ interface SubjectCardProps {
     dict,
 }
 
-const SubjectCard: React.FC<SubjectCardProps> = ({ code, dict }) => (
-    <Card style={{ backgroundColor: getColor(code, dict) }}
-        sx={{
-            width: 120,
-            height: 60,
-            borderRadius: '0',
-            border: '1px solid black'
-        }}>
-        <CardContent sx={{ margin: 0, p: 0.3 }}>
-            <Typography textAlign='end' fontSize={10} sx={{ p: 0, marginRight: 1 }} >
-                {dict[code].credits || 0}
-            </Typography>
-            {dict[code].subjectName != "Integrador" ?
-                <Divider sx={{ borderBottom: '1px solid black', marginRight: 1, marginLeft: 1 }} />
-                : <></>}
-            {["Integrador", "Especializante"].includes(dict[code].subjectName) ?
-                <Typography textAlign='center' fontSize={10}>
-                    {"OPTATIVA"}
-                </Typography>
-                : <></>}
-            <Typography textAlign='center' fontSize={10}>
-                {dict[code].subjectName}
-            </Typography>
-        </CardContent>
-    </Card >
-);
+const SubjectCard: React.FC<SubjectCardProps> = ({ code, dict }) => {
 
+    const [isHovered, setHovered] = useState(false);
+    const handleMouseEnter = () => setHovered(true);
+    const handleMouseLeave = () => setHovered(false);
+
+    const cardStyle = {
+        width: 120,
+        height: 60,
+        borderRadius: '0',
+        border: '1px solid black',
+        transition: 'transform 0.3s',
+        transform: isHovered ? 'scale(1.1)' : 'scale(1)',
+    };
+
+    return (
+        <Card
+            style={{ backgroundColor: getColor(code, dict) }}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            sx={cardStyle}>
+            <CardContent sx={{ margin: 0, p: 0.3 }}>
+                <Typography textAlign='end' fontSize={10} sx={{ p: 0, marginRight: 1 }} >
+                    {dict[code].credits || 0}
+                </Typography>
+                {dict[code].subjectName != "Integrador" ?
+                    <Divider sx={{ borderBottom: '1px solid black', marginRight: 1, marginLeft: 1 }} />
+                    : <></>}
+                {["Integrador", "Especializante"].includes(dict[code].subjectName) ?
+                    <Typography textAlign='center' fontSize={10}>
+                        {"OPTATIVA"}
+                    </Typography>
+                    : <></>}
+                <Typography textAlign='center' fontSize={10}>
+                    {dict[code].subjectName}
+                </Typography>
+            </CardContent>
+        </Card >
+    );
+}
 
 const CurriculumMap: React.FC = () => {
 
