@@ -30,6 +30,7 @@ async function generateSemesterMapDict(program: string[][]) {
                 "branch": doc.data().branch,
                 "credits": doc.data().credits,
                 "subjectName": doc.data().subjectName,
+                "releases": doc.data().releases
             }
         }
     });
@@ -49,7 +50,6 @@ function getColor(code, dict) {
         case "Integrador":
             return "#9966FF";
         default:
-            console.log(dict[code]);
             return "white"
     }
 }
@@ -74,11 +74,43 @@ interface SubjectCardProps {
     dict,
 }
 
-const SubjectCard: React.FC<SubjectCardProps> = ({ code, dict }) => {
+const checkShowability = (code, dict, showSet) => {
+    if (showSet.showAll == true) {
+        return true
+    }
+    return showSet.showByCode.has(code)
+}
+
+
+const SubjectCard: React.FC<SubjectCardProps> = ({ code, dict, showSet, showSetter }) => {
 
     const [isHovered, setHovered] = useState(false);
+    const [timesClicked, setTimesClicked] = useState(0);
+
     const handleMouseEnter = () => setHovered(true);
-    const handleMouseLeave = () => setHovered(false);
+    const handleMouseLeave = () => {
+        setHovered(false)
+        if (timesClicked) {
+            showSetter({ showAll: true, showByCode: new Set() })
+            setTimesClicked(0)
+        }
+
+    };
+    const handleClick = () => {
+        if (timesClicked == 0) {
+            let subjectSet = new Set()
+            subjectSet.add(code)
+            dict[code].releases.split('-').forEach(subject => {
+                subjectSet.add(subject)
+            })
+            showSetter({ showAll: false, showByCode: subjectSet })
+            setTimesClicked(1)
+        } else if (timesClicked == 1) {
+            setTimesClicked(2)
+        } else if (timesClicked == 2) {
+            setTimesClicked(0)
+        }
+    }
 
     const cardStyle = {
         width: 120,
@@ -87,6 +119,7 @@ const SubjectCard: React.FC<SubjectCardProps> = ({ code, dict }) => {
         border: '1px solid black',
         transition: 'transform 0.3s',
         transform: isHovered ? 'scale(1.1)' : 'scale(1)',
+        opacity: checkShowability(code, dict, showSet) ? 1 : 0.2,
     };
 
     return (
@@ -94,6 +127,7 @@ const SubjectCard: React.FC<SubjectCardProps> = ({ code, dict }) => {
             style={{ backgroundColor: getColor(code, dict) }}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            onClick={handleClick}
             sx={cardStyle}>
             <CardContent sx={{ margin: 0, p: 0.3 }}>
                 <Typography textAlign='end' fontSize={10} sx={{ p: 0, marginRight: 1 }} >
@@ -119,6 +153,7 @@ const CurriculumMap: React.FC = () => {
 
     const [semesterProgram, setSemesterProgram] = useState([]);
     const [programDict, setProgramDict] = useState({});
+    const [showSet, setShowDict] = useState({ showAll: true, showByCode: new Set() });
 
     useEffect(() => {
         const prepareData = async () => {
@@ -197,7 +232,13 @@ const CurriculumMap: React.FC = () => {
                                     <Grid container spacing={1.3}>
                                         {semester.map((subjectCode, subjectIndex) => (
                                             <Grid item key={semesterIndex}>
-                                                <SubjectCard key={subjectIndex} code={subjectCode} dict={programDict} />
+                                                <SubjectCard
+                                                    key={subjectIndex}
+                                                    code={subjectCode}
+                                                    dict={programDict}
+                                                    showSet={showSet}
+                                                    showSetter={setShowDict}
+                                                />
                                             </Grid>
                                         ))}
                                     </Grid>
