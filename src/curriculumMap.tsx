@@ -115,17 +115,8 @@ const SubjectCard: React.FC<SubjectCardProps> = ({ code, dict, showSet, showSett
 
     };
     const handleClick = () => {
-        console.log(timesClicked)
         if (timesClicked == 0) {
             setTimesClicked(1)
-            let subjectSet = new Set()
-            subjectSet.add(code)
-            dict[code].releases.split('-').forEach(subject => {
-                subjectSet.add(subject)
-            })
-            showSetter({ showAll: false, showByCode: subjectSet })
-        } else if (timesClicked == 1) {
-            setTimesClicked(2)
             let subjectSet = trasverseTree(code, dict)
             showSetter({ showAll: false, showByCode: subjectSet })
         }
