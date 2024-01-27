@@ -7,7 +7,7 @@ import LCCIcon from "./assets/logo-lcc-blanco.svg"
 import { useIsAuthenticated } from "@azure/msal-react";
 import { AccountCircle } from '@mui/icons-material';
 import { db } from "./firebase"
-import { query, collection, where, getDocs, doc, getDoc} from "firebase/firestore";
+import { query, collection, where, getDocs, doc, getDoc } from "firebase/firestore";
 
 import { Link } from 'react-router-dom';
 import Card from '@mui/material/Card';
@@ -31,7 +31,7 @@ const Dashboard: React.FC = () => {
     const loginRequest = {
         scopes: ["User.Read"], // Define necessary scopes
     };
-    const [userID, setID]=React.useState<string>("");
+    const [userID, setID] = React.useState<string>("");
     const [userInfo, setUserinfo] = React.useState<any[]>([]);
     const [loggedIn, setLogin] = React.useState<boolean>(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -62,38 +62,39 @@ const Dashboard: React.FC = () => {
     };
     const fetchData = async () => {
         try {
-          const match = instance.getActiveAccount()?.username!.match(/a(\d+)@unison\.mx/);
-          const q = query(collection(db, 'students'), where('studentID', '==', Number(match![1])));
-          console.log(match![1]);
-    
-          const querySnapshot = await getDocs(q);
-    
-          setUserinfo(
-            querySnapshot.docs.map((doc) => ({
-              ...doc.data(),
-            }))
-          );
+            const match = instance.getActiveAccount()?.username!.match(/a(\d+)@unison\.mx/);
+            const q = await query(collection(db, 'students'), where('studentID', '==', Number(match![1])));
+            console.log(match![1]);
+
+            const querySnapshot = await getDocs(q);
+
+            setUserinfo(
+                querySnapshot.docs.map((doc) => ({
+                    ...doc.data(),
+                }))
+            );
 
         } catch (error) {
-          console.error('Error fetching data:', error);
+            console.log(error)
+            console.error('Error fetching data:', error);
         }
-      };
+    };
 
-      
-      React.useEffect(() => {
+
+    React.useEffect(() => {
         fetchData();
-      }, []);
+    }, []);
     const test = () => {
         console.log(userInfo);
-        console.log(Math.round(Number(userInfo[0]?.approvedCredits)/Number(userInfo[0]?.requiredCredits) * 100))
+        console.log(Math.round(Number(userInfo[0]?.approvedCredits) / Number(userInfo[0]?.requiredCredits) * 100))
     }
     const redBorder = {
         borderColor: red[500],
         borderWidth: 2,
         borderStyle: 'solid',
-        display: 'flex', alignItems: 'center', justifyContent: 'center', height: 80, width: 200 
-      };
-      
+        display: 'flex', alignItems: 'center', justifyContent: 'center', height: 80, width: 200
+    };
+
     return (
         <Box sx={{ flexGrow: 1, width: "100%", backgroundColor: "white" }}>
             <Box sx={{ flexGrow: 1, color: "black" }}>
@@ -142,7 +143,7 @@ const Dashboard: React.FC = () => {
                     </Toolbar>
                 </AppBar>
             </Box>
-            
+
             <Box sx={{ display: "flex", flexDirection: 'column', color: "black" }}>
                 <div style={{ "textAlign": "left", "marginLeft": "30px", "marginTop": "80px", "marginBottom": "0px" }}>
                     <h2>Resumen</h2>
@@ -155,7 +156,7 @@ const Dashboard: React.FC = () => {
                             <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                 {/* Your card content */}
                                 <h2>Porcentaje de avance</h2>
-                                <h1>{Math.round(Number(userInfo[0]?.approvedCredits)/Number(userInfo[0]?.requiredCredits) * 100)}%</h1>
+                                <h1>{Math.round(Number(userInfo[0]?.approvedCredits) / Number(userInfo[0]?.requiredCredits) * 100)}%</h1>
                             </CardContent>
                         </Card>
                     </Grid>
@@ -189,7 +190,7 @@ const Dashboard: React.FC = () => {
 
             </div>
             <Divider className="separator" sx={{ ml: "30px", width: "95%", "marginBottom": "20px" }} />
-            {Math.round(Number(userInfo[0]?.approvedCredits)/Number(userInfo[0]?.requiredCredits) * 100)>70 ?
+            {Math.round(Number(userInfo[0]?.approvedCredits) / Number(userInfo[0]?.requiredCredits) * 100) > 70 ?
                 (<div style={{ "textAlign": "left", "marginLeft": "30px", "marginTop": "30px", "color": "black" }}>
                     <p> Cumples con suficientes créditos para comenzar tu servicio social, aquí se encuentran algunos proyectos recomendados:</p>
                     <TableContainer component={Paper}>
@@ -226,8 +227,8 @@ const Dashboard: React.FC = () => {
                 )
                 :
                 (<div style={{ "textAlign": "left", "marginLeft": "30px", "marginTop": "30px", "color": "black" }}>
-                <p> El servicio social solo se encuentra disponible si tienes más del 70% de tus créditos y si has asistido a la platica de inducción.</p>
-            </div>)}
+                    <p> El servicio social solo se encuentra disponible si tienes más del 70% de tus créditos y si has asistido a la platica de inducción.</p>
+                </div>)}
             <Divider className="separator" sx={{ ml: "30px", width: "95%", "marginBottom": "25px", "marginTop": "25px" }} />
             <div style={{ "textAlign": "left", "marginLeft": "30px", "marginTop": "30px", "color": "black" }}>
                 <h2>Mi trayectoria</h2>
@@ -249,9 +250,9 @@ const Dashboard: React.FC = () => {
                     </Table>
                 </TableContainer>
                 <h3>Progreso:</h3>
-                <CurriculumMap/>
+                <CurriculumMap />
             </div>
-        <br/><br/><br/><br/><br/>
+            <br /><br /><br /><br /><br />
         </Box>
 
     );

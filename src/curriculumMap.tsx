@@ -20,6 +20,7 @@ function generateSemesterMap(inferior_map: string[]) {
     return semesterProgram;
 }
 
+
 async function generateSemesterMapDict(program: string[][]) {
     const programDict = {}
     const flattenProgram = new Set([].concat(...program));
@@ -35,6 +36,38 @@ async function generateSemesterMapDict(program: string[][]) {
         }
     });
     return programDict;
+}
+
+enum SubjectStatus {
+    DROPPED,
+    APPROVED,
+    FAILED,
+    ENROLLED,
+    ENROLLED2,
+    ENROLLED3
+}
+async function generateSubjectEnrollment(alumnId: string) {
+    const enrollment = {};
+    const docSnap = await getDoc(doc(db, "students", String(alumnId)));
+    docSnap.data()["creditedSubjects"].split('-').forEach((key) => {
+        enrollment[key.split(" ").at(-1)] = SubjectStatus.APPROVED
+    })
+    docSnap.data()["droppedSubjects"].split('-').forEach((key) => {
+        enrollment[key.split(" ").at(-1)] = SubjectStatus.DROPPED
+    })
+    docSnap.data()["failedSubjects"].split('-').forEach((key) => {
+        enrollment[key.split(" ").at(-1)] = SubjectStatus.FAILED
+    })
+    docSnap.data()["enrolledSubjects"].split('-').forEach((key) => {
+        enrollment[key.split(" ").at(-1)] = SubjectStatus.ENROLLED
+    })
+    docSnap.data()["secondEnrolledSubjects"].split('-').forEach((key) => {
+        enrollment[key.split(" ").at(-1)] = SubjectStatus.ENROLLED2
+    })
+    docSnap.data()["thirdEnrolledSubjects"].split('-').forEach((key) => {
+        enrollment[key.split(" ").at(-1)] = SubjectStatus.ENROLLED3
+    })
+    return enrollment
 }
 
 function getColor(code, dict) {
@@ -100,7 +133,7 @@ function trasverseTree(root, dict) {
     return treeMembers
 }
 
-const SubjectCard: React.FC<SubjectCardProps> = ({ code, dict, showSet, showSetter }) => {
+const SubjectCard: React.FC<SubjectCardProps> = ({ code, dict, enroll, showSet, showSetter }) => {
 
     const [isHovered, setHovered] = useState(false);
     const [timesClicked, setTimesClicked] = useState(0);
@@ -124,11 +157,33 @@ const SubjectCard: React.FC<SubjectCardProps> = ({ code, dict, showSet, showSett
         }
     }
 
+    const getOutline = () => {
+        switch (enroll[code]) {
+            case SubjectStatus.ENROLLED:
+                return '3px solid #92C5FC'
+            case SubjectStatus.APPROVED:
+                return '2px solid #66ff66'
+            case SubjectStatus.FAILED:
+                return '2px solid #DC3545'
+            case SubjectStatus.DROPPED:
+                return '2px solid pink'
+            case SubjectStatus.ENROLLED2:
+                return '2px solid yellow'
+            case SubjectStatus.ENROLLED3:
+                return '2px solid orange'
+
+            default:
+                return '1px solid white'
+        }
+
+    }
+
     const cardStyle = {
         width: 120,
         height: 60,
         borderRadius: '0',
         border: '1px solid black',
+        outline: getOutline(),
         transition: 'transform 0.3s',
         transform: isHovered ? 'scale(1.1)' : 'scale(1)',
         opacity: checkShowability(code, dict, showSet) ? 1 : 0.2,
@@ -142,9 +197,11 @@ const SubjectCard: React.FC<SubjectCardProps> = ({ code, dict, showSet, showSett
             onClick={handleClick}
             sx={cardStyle}>
             <CardContent sx={{ margin: 0, p: 0.3 }}>
-                <Typography textAlign='end' fontSize={10} sx={{ p: 0, marginRight: 1 }} >
-                    {dict[code].credits || 0}
-                </Typography>
+                <div>
+                    <Typography textAlign='end' fontSize={10} sx={{ p: 0, marginRight: 1 }} >
+                        {dict[code].credits || 0}
+                    </Typography>
+                </div>
                 {dict[code].subjectName != "Integrador" ?
                     <Divider sx={{ borderBottom: '1px solid black', marginRight: 1, marginLeft: 1 }} />
                     : <></>}
@@ -165,6 +222,7 @@ const CurriculumMap: React.FC = () => {
 
     const [semesterProgram, setSemesterProgram] = useState([]);
     const [programDict, setProgramDict] = useState({});
+    const [subjectEnrollment, setSubjectEnrollment] = useState({})
     const [showSet, setShowDict] = useState({ showAll: true, showByCode: new Set() });
 
     useEffect(() => {
@@ -172,8 +230,10 @@ const CurriculumMap: React.FC = () => {
             const LCCMap = await getSemesterMap("2052");
             const semesterProgram: string[][] = generateSemesterMap(LCCMap.semesters)
             const programDict = await generateSemesterMapDict(semesterProgram);
+            const subjEnroll = await generateSubjectEnrollment("220212781");
             setSemesterProgram(semesterProgram);
             setProgramDict(programDict);
+            setSubjectEnrollment(subjEnroll);
         }
 
         prepareData();
@@ -248,6 +308,7 @@ const CurriculumMap: React.FC = () => {
                                                     key={subjectIndex}
                                                     code={subjectCode}
                                                     dict={programDict}
+                                                    enroll={subjectEnrollment}
                                                     showSet={showSet}
                                                     showSetter={setShowDict}
                                                 />
