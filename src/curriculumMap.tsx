@@ -30,7 +30,7 @@ async function generateSemesterMapDict(program: string[][]) {
                 "branch": doc.data().branch,
                 "credits": doc.data().credits,
                 "subjectName": doc.data().subjectName,
-                "releases": doc.data().releases
+                "tracklist": doc.data().tracklistSubject
             }
         }
     });
@@ -114,10 +114,12 @@ const SubjectCard: React.FC<SubjectCardProps> = ({ code, dict, showSet, showSett
         }
 
     };
+
     const handleClick = () => {
         if (timesClicked == 0) {
             setTimesClicked(1)
-            let subjectSet = trasverseTree(code, dict)
+            let subjectSet = new Set(dict[code].tracklist)
+            subjectSet.add(code)
             showSetter({ showAll: false, showByCode: subjectSet })
         }
     }
@@ -261,16 +263,5 @@ const CurriculumMap: React.FC = () => {
         </>
     );
 }
-
-/* TODO
-   - Semester up to top
-   - Fetch info from key in firebase
-   - Add colors
-   - Add header
-   - Add images and logos
-   - Review``
-
-
-*/
 
 export default CurriculumMap;
