@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, Card, CardContent, CardHeader, Typography, TableContainer, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
 import { doc, getDoc, getDocs, collection } from "firebase/firestore";
-import { db } from "./firebase";
+import { db } from "../../(landingPage)/_components/firebase";
 import { Container, Divider } from "@mui/material"
-import UniversidadSonora from "./assets/Escudo_Unison.png"
-import LccLogo from "./assets/logo-lcc-letras.svg"
+import UniversidadSonora from "../../../public/Escudo_Unison.png"
+import LccLogo from "../../../public/logo-lcc-letras.svg"
 
 async function getSemesterMap(key: string) {
     const docRef = doc(db, "curriculumMaps", key);
@@ -218,7 +218,7 @@ const SubjectCard: React.FC<SubjectCardProps> = ({ code, dict, enroll, showSet, 
     );
 }
 
-const CurriculumMap: React.FC = () => {
+const CurriculumMap: React.FC = (user) => {
 
     const [semesterProgram, setSemesterProgram] = useState([]);
     const [programDict, setProgramDict] = useState({});
@@ -230,6 +230,7 @@ const CurriculumMap: React.FC = () => {
             const LCCMap = await getSemesterMap("2052");
             const semesterProgram: string[][] = generateSemesterMap(LCCMap.semesters)
             const programDict = await generateSemesterMapDict(semesterProgram);
+            console.log(user)
             const subjEnroll = await generateSubjectEnrollment("220212781");
             setSemesterProgram(semesterProgram);
             setProgramDict(programDict);

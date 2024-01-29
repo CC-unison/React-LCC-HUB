@@ -1,3 +1,5 @@
+import AuthProvider from "../(landingPage)/_components/AuthProvider";
+
 const DashboardLayout = ({
     children,
 }: {
@@ -5,7 +7,9 @@ const DashboardLayout = ({
 }) => {
     return (
         <div>
-            {children}
+            <AuthProvider>
+                {children}
+            </AuthProvider>
         </div>
     );
 };

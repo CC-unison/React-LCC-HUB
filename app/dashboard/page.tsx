@@ -1,7 +1,7 @@
 "use client"
 import React from 'react';
 import { AppBar, Box, Button, Container, IconButton, Menu, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from '@mui/material';
-import './landingPage.css'
+import '../(landingPage)/landingPage.css'
 import { useIsAuthenticated } from "@azure/msal-react";
 import { AccountCircle } from '@mui/icons-material';
 import { db } from "../(landingPage)/_components/firebase"
@@ -41,7 +41,6 @@ const DashboardPage: React.FC = () => {
     const handleLogOut = async () => {
         instance.logoutPopup().then(() => {
             setLogin(false);
-            navigate('/', { replace: true });
         });
     }
     const handleLogin = async () => {
@@ -61,6 +60,7 @@ const DashboardPage: React.FC = () => {
         try {
             const match = instance.getActiveAccount()?.username!.match(/a(\d+)@unison\.mx/);
             const q = await query(collection(db, 'students'), where('studentID', '==', Number(match![1])));
+            setID(match![1]);
             console.log(match![1]);
 
             const querySnapshot = await getDocs(q);
@@ -250,7 +250,7 @@ const DashboardPage: React.FC = () => {
                     </Table>
                 </TableContainer>
                 <h3>Progreso:</h3>
-                <CurriculumMap />
+                <CurriculumMap user={userID} />
             </div>
             <br /><br /><br /><br /><br />
         </Box>
