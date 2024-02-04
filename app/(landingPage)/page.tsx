@@ -6,7 +6,7 @@ import './landingPage.css'
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { db } from "./_components/firebase"
+import db from "../../firebase"
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import { CssBaseline, Divider, Grid } from "@mui/material";
 import SoyLCC from './_components/SoyLCCcard';
@@ -31,6 +31,7 @@ export default function LandingPage() {
     const [soyLCC, setSoyLCC] = React.useState<any[]>([]);
     const [galeria, setGaleria] = React.useState<any[]>([]);
     const [isScrolled, setIsScrolled] = React.useState(false);
+
     const [openLogin, setOpenLogin] = React.useState(false);
     const isAuthenticated = useIsAuthenticated();
     const [usuario, setUsuario] = React.useState<string>("");
