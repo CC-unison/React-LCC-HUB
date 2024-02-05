@@ -1,5 +1,12 @@
-import { NavBar } from './_components/navbar'
+import { Header } from './_components/header'
 import { Footer } from './_components/footer'
+import { Container, CssBaseline } from '@mui/material';
+
+const sections = [
+    { title: 'Soy LCC', url: '#' },
+    { title: 'Noticias', url: '#' },
+    { title: 'Galeria', url: '#' },
+];
 
 const HubLayout = ({
     children,
@@ -7,11 +14,14 @@ const HubLayout = ({
     children: React.ReactNode
 }) => {
     return (
-        <div>
-            <NavBar />
-            {children}
-            <Footer />
-        </div>
+        <>
+            <CssBaseline />
+            <Container maxWidth={false} disableGutters>
+                <Header title="LCC Hub" sections={sections} />
+                {children}
+                <Footer />
+            </Container>
+        </>
     );
 };
 
