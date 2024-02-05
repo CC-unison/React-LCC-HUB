@@ -1,4 +1,5 @@
 import { NavBar } from './_components/navbar'
+import { Footer } from './_components/footer'
 
 const HubLayout = ({
     children,
@@ -9,6 +10,7 @@ const HubLayout = ({
         <div>
             <NavBar />
             {children}
+            <Footer />
         </div>
     );
 };
