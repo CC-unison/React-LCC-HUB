@@ -1,4 +1,4 @@
-import { Container } from "@mui/material";
+import { Container, Box, Divider, Typography } from "@mui/material";
 import { MainFeaturedPost } from "./_components/mainFeaturedPost";
 import { SoyLCCsection } from "./_components/soyLCCsection";
 
@@ -21,9 +21,24 @@ const soyLCCposts = [
 const HubPage = () => {
     return (
         <main>
-            <Container maxWidth={false} sx={{ backgroundColor: "#112e5c" }}>
+            <Container maxWidth={false} disableGutters sx={{ backgroundColor: "#ffffff" }}>
                 <MainFeaturedPost post={mainFeaturedPost} />
-                <SoyLCCsection posts={soyLCCposts} />
+                <Container>
+                    <Typography color={"black"} variant="h6">Soy LCC</Typography>
+                    <Divider />
+                    <SoyLCCsection posts={soyLCCposts} />
+                </Container>
+                <Container>
+                    <Typography color={"black"} variant="h6">Noticias</Typography>
+                    <Divider />
+                    <SoyLCCsection posts={soyLCCposts} />
+                </Container>
+                <Container>
+                    <Typography color={"black"} variant="h6">Galery</Typography>
+                    <Divider />
+                    <SoyLCCsection posts={soyLCCposts} />
+                </Container>
+
             </Container>
         </main>
     );
