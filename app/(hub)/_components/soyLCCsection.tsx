@@ -1,5 +1,4 @@
 'use client'
-import { Container } from "@mui/material";
 import { SoyLCCcard } from "./soyLCCcard";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -33,9 +32,9 @@ export const SoyLCCsection = (props: SoyLCCprops) => {
             navigation={true}
         >
 
-            {posts.map((post) => (
-                <SwiperSlide>
-                    <SoyLCCcard post={post} />
+            {posts.map((post, i) => (
+                <SwiperSlide key={i}>
+                    <SoyLCCcard post={post} key={post.title} />
                 </SwiperSlide>
             ))}
         </Swiper>

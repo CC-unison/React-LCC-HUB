@@ -1,4 +1,5 @@
-import React from 'react';
+'use client'
+import React, { useState, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -17,10 +18,14 @@ import Box from '@mui/material/Box';
 export const Footer = ({
     backgroundColor = '#112e5c',
     textColor = '#fff',
-    position = 'static',
     elevation = 4,
 }) => {
-    return (
+
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => {
+        setMounted(true)
+    }, [])
+    return mounted &&
         <AppBar color="primary" position="static" elevation={elevation} style={{ backgroundColor }} sx={{ padding: 2 }}>
             <Toolbar>
                 <Grid container spacing={3}>
@@ -99,7 +104,6 @@ export const Footer = ({
                 </Grid>
             </Toolbar>
         </AppBar>
-    );
 };
 
 
