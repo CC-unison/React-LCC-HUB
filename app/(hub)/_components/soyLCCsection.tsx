@@ -6,20 +6,16 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
+const soyLCCposts = [
+    { image: 'https://source.unsplash.com/random?wallpapers', imageLabel: "nini", title: "Title", description: "desc", date: "hoy" },
+    { image: "#", imageLabel: "nini", title: "Title", description: "desc", date: "hoy" },
+    { image: "#", imageLabel: "nini", title: "Title", description: "desc", date: "hoy" },
+    { image: "#", imageLabel: "nini", title: "Title", description: "desc", date: "hoy" },
+];
 
 
-interface SoyLCCprops {
-    posts: ReadonlyArray<{
-        image: string;
-        imageLabel: string;
-        title: string;
-        description: string;
-        date: string;
-    }>;
-}
-
-export const SoyLCCsection = (props: SoyLCCprops) => {
-    const { posts } = props;
+export const SoyLCCsection = async () => {
+    const posts = soyLCCposts;
     return (
         <Swiper
             slidesPerView={3}
