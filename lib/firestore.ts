@@ -50,4 +50,23 @@ export async function getGalleryPhotos() {
     });
 }
 
+export async function getSoyLCCVideos() {
+    const q = query(
+        collection(db, "videos"),
+        orderBy("date", "desc"));
+
+    const results = await getDocs(q);
+    return results.docs.map(doc => {
+        const data = doc.data();
+        const date = data.date.toDate().toString();
+        return {
+            image: data.img,
+            imageLabel: data.titulo,
+            title: data.titulo,
+            date: date,
+            url: data.url,
+        }
+    });
+}
+
 
