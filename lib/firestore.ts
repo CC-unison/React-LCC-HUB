@@ -32,4 +32,22 @@ export async function getNoticias() {
     });
 }
 
+export async function getGalleryPhotos() {
+    const q = query(
+        collection(db, "galeria"),
+        orderBy("date", "desc"));
+    const results = await getDocs(q);
+    return results.docs.map(doc => {
+        const data = doc.data();
+        const cols = Math.floor(Math.random() * 2 + 1);
+        const rows = cols;
+        return {
+            img: data.url,
+            title: data.uid,
+            cols: cols,
+            rows: rows,
+        }
+    });
+}
+
 
