@@ -1,7 +1,6 @@
 import { Container, Box, Divider, Typography, Grid } from "@mui/material";
 import { MainFeaturedPost } from "./_components/mainFeaturedPost";
 import { SoyLCCsection } from "./_components/soyLCCsection";
-import { NoticiaPost } from "./_components/noticiaPost";
 import { GallerySection } from "./_components/gallerySection";
 import { NoticiasSection } from "./_components/noticiasSection";
 
@@ -17,7 +16,7 @@ const mainFeaturedPost = {
 
 
 
-const HubPage = () => {
+const HubPage = async () => {
     return (
         <main>
             <Container maxWidth={false} disableGutters sx={{ backgroundColor: "#ffffff" }}>

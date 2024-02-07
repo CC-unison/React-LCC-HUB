@@ -33,13 +33,10 @@ export function NoticiaPost(props: NoticiaPostProps) {
                         <Typography variant="subtitle1" paragraph>
                             {post.description}
                         </Typography>
-                        <Typography variant="subtitle1" color="primary">
-                            Continue reading...
-                        </Typography>
                     </CardContent>
                     <CardMedia
                         component="img"
-                        sx={{ width: 160, display: { xs: 'none', sm: 'block' } }}
+                        sx={{ width: 200, display: { xs: 'none', sm: 'block' } }}
                         image={post.image}
                         alt={post.imageLabel}
                     />
