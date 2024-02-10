@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@azure/msal-react": "^2.0.10",
+    "@clerk/localizations": "^1.26.15",
     "@clerk/nextjs": "^4.29.7",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
