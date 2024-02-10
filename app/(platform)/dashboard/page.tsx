@@ -1,17 +1,23 @@
-import { UserButton } from "@clerk/nextjs";
+import { auth, currentUser, UserButton } from "@clerk/nextjs";
 
-const DashboardPage = () => {
+const DashboardPage = async () => {
+    const user = await currentUser();
+    const email = user?.emailAddresses[0].emailAddress;
+    const id = email?.split('@')[0].substring(1);
+
     return (
         <div>
-            <UserButton />
-            <div>
-                Protected
+            {id == "220212781" ? <div><UserButton />
+                <div>
+                    {id}
+                </div>
             </div>
-            <div>
-                Not logined
-            </div>
+                :
+                <div> Mosca </div>
+            }
         </div>
     );
+
 }
 
 export default DashboardPage;
