@@ -1,4 +1,5 @@
-import { Paper, Box, Grid, Link, Typography } from "@mui/material";
+import { Paper, Box, Grid, Typography } from "@mui/material";
+import Link from "next/link";
 
 interface MainFeaturedPostProps {
     post: {
@@ -52,7 +53,7 @@ export const MainFeaturedPost = (props: MainFeaturedPostProps) => {
                         <Typography variant="h5" color="inherit" paragraph>
                             {post.description}
                         </Typography>
-                        <Link variant="subtitle1" href="#">
+                        <Link href="/log-in">
                             {post.linkText}
                         </Link>
                     </Box>

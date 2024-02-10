@@ -3,7 +3,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import Link from '@mui/material/Link';
+import Link from 'next/link'
 import React from 'react';
 import { Logo } from './logo';
 
@@ -41,7 +41,9 @@ export const Header = (props: HeaderProps) => {
                         {title}
                     </Typography>
                     <Button variant="contained" size="medium" sx={{ backgroundColor: "black" }}>
-                        Log In
+                        <Link href="/log-in">
+                            Log In
+                        </Link>
                     </Button>
                 </Toolbar>
                 <Toolbar
@@ -51,12 +53,8 @@ export const Header = (props: HeaderProps) => {
                 >
                     {sections.map((section) => (
                         <Link
-                            color="inherit"
-                            noWrap
                             key={section.title}
-                            variant="body2"
                             href={section.url}
-                            sx={{ p: 1, flexShrink: 0 }}
                         >
                             {section.title}
                         </Link>
