@@ -13,7 +13,6 @@ interface SoyLCCcardProps {
         image: string;
         imageLabel: string;
         title: string;
-        url: string;
     };
 }
 
@@ -21,7 +20,7 @@ export const SoyLCCcard = (props: SoyLCCcardProps) => {
     const { post } = props;
 
     return (
-        <CardActionArea component="a" href={post.url} target="_blank">
+        <CardActionArea component="a" href="#">
             <Card sx={{ display: 'flex' }}>
                 <CardContent sx={{ flex: 1 }}>
                     <Typography component="h2" variant="h5">
@@ -32,6 +31,9 @@ export const SoyLCCcard = (props: SoyLCCcardProps) => {
                     </Typography>
                     <Typography variant="subtitle1" paragraph>
                         {post.description}
+                    </Typography>
+                    <Typography variant="subtitle1" color="primary">
+                        Continue reading...
                     </Typography>
                 </CardContent>
                 <CardMedia
