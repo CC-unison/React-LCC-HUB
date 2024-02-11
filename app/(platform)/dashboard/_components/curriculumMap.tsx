@@ -20,6 +20,7 @@ import LccLogo from "@/public/logo-lcc-letras.svg"
 import { getSemesterMap, generateSemesterMapDict } from "@/lib/firestore";
 import { SubjectStatus, SubjectCard } from "./subjectCard";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 interface CurriculumProps {
     mapCode: string,
@@ -66,7 +67,7 @@ export const CurriculumMap = (props: CurriculumProps) => {
                 </Typography>
                 <Grid container maxWidth='xs' direction="row" columns={5} justifyContent="center" alignItems="center">
                     <Grid item md={1} sx={{ p: 0, textAlign: 'center' }}>
-                        <img
+                        <Image
                             src={"@/public/Escudo_Unison.png"}
                             style={{ width: '50%', height: 'auto' }}
                         />
@@ -91,7 +92,7 @@ export const CurriculumMap = (props: CurriculumProps) => {
                         </Card>
                     </Grid>
                     <Grid item md={1} sx={{ textAlign: 'center' }}>
-                        <img
+                        <Image
                             src={"../../../../public/logo-lcc-letras.svg"}
                             style={{ width: '50%', height: 'auto' }}
                         />
@@ -102,7 +103,7 @@ export const CurriculumMap = (props: CurriculumProps) => {
                 <TableHead>
                     <TableRow>
                         {semesterProgram.map((_, i) => (
-                            <TableCell>
+                            <TableCell key={i}>
                                 <Typography variant="h5" align="center" style={{ fontFamily: "Times New Roman, Times, Times" }}>
                                     {romanize(i + 1)}
                                 </Typography>
@@ -113,7 +114,7 @@ export const CurriculumMap = (props: CurriculumProps) => {
                 <TableBody>
                     <TableRow>
                         {semesterProgram.map((semester, semesterIndex) => (
-                            <TableCell sx={{ verticalAlign: 'top', margin: 0, p: 1 }}>
+                            <TableCell key={semesterIndex} sx={{ verticalAlign: 'top', margin: 0, p: 1 }}>
                                 <Grid container spacing={1.3}>
                                     {semester.map((subjectCode, subjectIndex) => (
                                         <Grid item key={semesterIndex}>

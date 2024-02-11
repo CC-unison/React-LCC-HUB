@@ -1,4 +1,5 @@
 import { Paper, Box, Grid, Button, Typography } from "@mui/material";
+import Image from 'next/image';
 import Link from "next/link";
 
 interface MainFeaturedPostProps {
@@ -27,7 +28,7 @@ export const MainFeaturedPost = (props: MainFeaturedPostProps) => {
             }}
         >
             {/* Increase the priority of the hero background image */}
-            {<img style={{ display: 'none' }} src={post.image} alt={post.imageText} />}
+            {<Image style={{ display: 'none' }} src={post.image} alt={post.imageText} />}
             <Box
                 sx={{
                     position: 'absolute',

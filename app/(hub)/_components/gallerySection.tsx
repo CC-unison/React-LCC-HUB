@@ -3,6 +3,7 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import { Container } from '@mui/material';
 import { getGalleryPhotos } from '@/lib/firestore';
+import Image from 'next/image';
 
 export const GallerySection = async () => {
     const photos = await getGalleryPhotos();
@@ -16,7 +17,7 @@ export const GallerySection = async () => {
             >
                 {photos.map((photo) => (
                     <ImageListItem key={photo.img} cols={photo.cols || 1} rows={photo.rows || 1}>
-                        <img
+                        <Image
                             {...srcset(photo.img, 121, photo.rows, photo.cols)}
                             alt={photo.title}
                             loading="lazy"
