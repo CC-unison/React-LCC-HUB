@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Toolbar, IconButton, Typography } from "@mui/material";
+import { Toolbar, IconButton, Typography, CssBaseline } from "@mui/material";
 import { Logo } from "./(hub)/_components/logo";
 import { Inter } from "next/font/google";
 import "./globals.css";

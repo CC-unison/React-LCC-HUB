@@ -12,10 +12,6 @@ const mainFeaturedPost = {
     linkText: 'LOG IN',
 };
 
-
-
-
-
 const HubPage = async () => {
     return (
         <main>

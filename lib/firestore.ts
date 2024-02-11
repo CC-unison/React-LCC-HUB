@@ -50,4 +50,31 @@ export async function getGalleryPhotos() {
     });
 }
 
+export async function getStudentById(id: string) {
+    const docRef = doc(db, "students", id);
+    const docSnap = await getDoc(docRef);
+    return { ...docSnap.data() }
+}
 
+export async function getSemesterMap(key: string) {
+    const docRef = doc(db, "curriculumMaps", key);
+    const docSnap = await getDoc(docRef);
+    return { ...docSnap.data() };
+}
+
+export async function generateSemesterMapDict(program: string[][]) {
+    const programDict = {}
+    const flattenProgram = new Set([].concat(...program));
+    const docSnap = await getDocs(collection(db, "subjects"));
+    docSnap.forEach((doc) => {
+        if (flattenProgram.has(doc.id)) {
+            programDict[doc.id] = {
+                "branch": doc.data().branch,
+                "credits": doc.data().credits,
+                "subjectName": doc.data().subjectName,
+                "tracklist": doc.data().tracklistSubject
+            }
+        }
+    });
+    return programDict;
+}

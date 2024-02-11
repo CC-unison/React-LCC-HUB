@@ -1,6 +1,6 @@
 import { ClerkProvider } from '@clerk/nextjs';
-import { Container } from '@mui/material';
 import { esES } from '@clerk/localizations';
+import { CssBaseline } from '@mui/material';
 
 const PlatformLayout = ({
     children
