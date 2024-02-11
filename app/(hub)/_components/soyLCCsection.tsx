@@ -5,34 +5,39 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import { getSoyLCCvideos } from "@/lib/firestore";
+import { useEffect, useState } from "react";
+import { Box } from "@mui/material";
 
-const soyLCCposts = [
-    { image: 'https://source.unsplash.com/random?wallpapers', imageLabel: "nini", title: "Title", description: "desc", date: "hoy" },
-    { image: "#", imageLabel: "nini", title: "Title", description: "desc", date: "hoy" },
-    { image: "#", imageLabel: "nini", title: "Title", description: "desc", date: "hoy" },
-    { image: "#", imageLabel: "nini", title: "Title", description: "desc", date: "hoy" },
-];
+export const SoyLCCsection = () => {
+    const [posts, setPosts] = useState();
+    useEffect(() => {
+        const prepareData = async () => {
+            let posts = await getSoyLCCvideos();
+            setPosts(posts)
+        }
+        prepareData()
+    }, []);
 
-
-export const SoyLCCsection = async () => {
-    const posts = soyLCCposts;
     return (
-        <Swiper
-            slidesPerView={3}
-            spaceBetween={10}
-            pagination={{
-                clickable: true,
-            }}
-            className="mySwiper"
-            modules={[Pagination, Navigation]}
-            navigation={true}
-        >
+        <Box className="container second" sx={{ display: "flex" }}>
+            <Swiper
+                slidesPerView={2}
+                spaceBetween={10}
+                pagination={{
+                    clickable: true,
+                }}
+                className="mySwiper"
+                modules={[Pagination, Navigation]}
+                navigation={true}
+            >
 
-            {posts.map((post, i) => (
-                <SwiperSlide key={i}>
-                    <SoyLCCcard post={post} key={post.title} />
-                </SwiperSlide>
-            ))}
-        </Swiper>
+                {posts && posts.map((post, i) => (
+                    <SwiperSlide key={i}>
+                        <SoyLCCcard post={post} key={post.title} />
+                    </SwiperSlide>
+                ))}
+            </Swiper>
+        </Box>
     );
 };

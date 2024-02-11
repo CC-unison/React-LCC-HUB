@@ -19,7 +19,7 @@ const DashboardPage = async () => {
                 <Typography mr={3}>
                     Usuario
                 </Typography>
-                <UserButton />
+                <UserButton afterSignOutUrl="/" />
             </Toolbar>
             {
                 !student.name ?

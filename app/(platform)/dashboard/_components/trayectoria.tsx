@@ -13,12 +13,10 @@ export const Trayectoria = () => {
                         <TableBody>
                             <TableRow>
                                 <TableCell>
-                                    00287 Seminario de Inteligencia Artificial
                                 </TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell>
-                                    09465 Procesos paralelos y distribuidos
                                 </TableCell>
                             </TableRow>
                         </TableBody>

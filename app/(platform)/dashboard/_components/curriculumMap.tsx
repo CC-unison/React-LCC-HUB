@@ -14,7 +14,7 @@ import {
     CardContent
 } from "@mui/material";
 
-import UniversidadSonora from "@//public/Escudo_Unison.png"
+import UniversidadSonora from "@/public/Escudo_Unison.png"
 import LccLogo from "@/public/logo-lcc-letras.svg"
 
 import { getSemesterMap, generateSemesterMapDict } from "@/lib/firestore";
@@ -47,9 +47,6 @@ export const CurriculumMap = (props: CurriculumProps) => {
             setSemesterProgram(semesterProgram);
             setProgramDict(programDict);
             setSubjectEnrollment(subjEnroll);
-            console.log("Semester Program", semesterProgram)
-            console.log("Program Dict", programDict)
-            console.log("Subj Enroll", subjEnroll)
         }
 
         prepareData();
@@ -70,7 +67,7 @@ export const CurriculumMap = (props: CurriculumProps) => {
                 <Grid container maxWidth='xs' direction="row" columns={5} justifyContent="center" alignItems="center">
                     <Grid item md={1} sx={{ p: 0, textAlign: 'center' }}>
                         <img
-                            src={UniversidadSonora}
+                            src={"@/public/Escudo_Unison.png"}
                             style={{ width: '50%', height: 'auto' }}
                         />
                     </Grid>
@@ -95,7 +92,7 @@ export const CurriculumMap = (props: CurriculumProps) => {
                     </Grid>
                     <Grid item md={1} sx={{ textAlign: 'center' }}>
                         <img
-                            src={LccLogo}
+                            src={"../../../../public/logo-lcc-letras.svg"}
                             style={{ width: '50%', height: 'auto' }}
                         />
                     </Grid>
