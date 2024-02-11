@@ -1,4 +1,4 @@
-import { Paper, Divider, TableContainer, Table, TableBody, TableRow, TableCell } from "@mui/material";
+import { Paper, Divider, TableContainer, Table, TableBody, TableRow, TableCell, TableHead } from "@mui/material";
 import React from "react";
 
 export const Trayectoria = () => {
@@ -10,6 +10,7 @@ export const Trayectoria = () => {
                 <h3>Materias inscritas:</h3>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }}>
+                        <TableHead />
                         <TableBody>
                             <TableRow>
                                 <TableCell>

@@ -1,4 +1,4 @@
-import { Divider, Grid, Card, CardContent, TableContainer, TableCell, TableRow, TableHead, TableBody } from "@mui/material";
+import { Divider, Grid, Card, CardContent, TableContainer, TableCell, TableRow, TableHead, TableBody, Table, Paper } from "@mui/material";
 
 interface AvanceProps {
     approvedCredits: number,
