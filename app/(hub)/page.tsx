@@ -1,13 +1,14 @@
-import { Container, Box, Divider, Typography, Grid } from "@mui/material";
+import { Container, Divider, Typography } from "@mui/material";
 import { MainFeaturedPost } from "./_components/mainFeaturedPost";
 import { SoyLCCsection } from "./_components/soyLCCsection";
 import { GallerySection } from "./_components/gallerySection";
 import { NoticiasSection } from "./_components/noticiasSection";
+import InvitadosWallpaper from "@/public/rectoria.jpg";
 
 const mainFeaturedPost = {
     title: 'LCC Hub Alpha v0',
     description: "Seguimiento de trayectoria académica de alumnos de LCC",
-    image: 'https://source.unsplash.com/random?wallpapers',
+    image: InvitadosWallpaper,
     imageText: 'main image description',
     linkText: 'LOG IN',
 };

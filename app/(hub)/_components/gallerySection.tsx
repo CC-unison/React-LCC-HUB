@@ -1,30 +1,44 @@
+"use client";
+
 import * as React from 'react';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import { Container } from '@mui/material';
 import { getGalleryPhotos } from '@/lib/firestore';
 import Image from 'next/image';
+import { useState, useEffect } from "react";
 
-export const GallerySection = async () => {
-    const photos = await getGalleryPhotos();
+export const GallerySection = () => {
+    const [photos, setPhotos] = useState();
+    useEffect(() => {
+        const prepareData = async () => {
+            const photos = await getGalleryPhotos();
+            setPhotos(photos)
+        }
+        prepareData();
+    }, []);
+
     return (
         <Container sx={{ pb: 10 }}>
-            <ImageList
-                sx={{ height: 300 }}
-                variant="quilted"
-                cols={4}
-                rowHeight={121}
-            >
-                {photos.map((photo) => (
-                    <ImageListItem key={photo.img} cols={photo.cols || 1} rows={photo.rows || 1}>
-                        <Image
-                            {...srcset(photo.img, 121, photo.rows, photo.cols)}
-                            alt={photo.title}
-                            loading="lazy"
-                        />
-                    </ImageListItem>
-                ))}
-            </ImageList>
+            {photos &&
+                <ImageList
+                    sx={{ height: 300 }}
+                    variant="quilted"
+                    cols={4}
+                    rowHeight={121}
+                >
+                    {photos.map((photo) => (
+                        <ImageListItem key={photo.img} cols={photo.cols || 3} rows={photo.rows || 3}>
+                            <Image
+                                {...srcset(photo.img, 121, photo.rows, photo.cols)}
+                                alt={photo.title}
+                                layout='fill'
+                                objectFit='contain'
+                            />
+                        </ImageListItem>
+                    ))}
+                </ImageList>
+            }
         </Container>
     );
 }

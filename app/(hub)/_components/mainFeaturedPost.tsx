@@ -18,7 +18,7 @@ export const MainFeaturedPost = (props: MainFeaturedPostProps) => {
         <Paper
             sx={{
                 position: 'relative',
-                backgroundColor: 'grey.800',
+                backgroundColor: '#112e5d',
                 color: '#fff',
                 mb: 4,
                 backgroundSize: 'cover',
@@ -27,8 +27,12 @@ export const MainFeaturedPost = (props: MainFeaturedPostProps) => {
                 backgroundImage: `url(${post.image})`,
             }}
         >
-            {/* Increase the priority of the hero background image */}
-            {<Image style={{ display: 'none' }} src={post.image} alt={post.imageText} />}
+            <Image fill
+                src={post.image}
+                alt={post.imageText}
+                objectFit={'contain'}
+                layout={'fill'}
+            />
             <Box
                 sx={{
                     position: 'absolute',
