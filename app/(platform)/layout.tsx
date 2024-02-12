@@ -9,8 +9,6 @@ const PlatformLayout = ({
     return (
         <ClerkProvider
             localization={esES}
-            afterSignInUrl='/dashboard'
-            afterSignUpUrl='/dashboard'
         >
             {children}
         </ClerkProvider>

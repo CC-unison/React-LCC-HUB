@@ -55,7 +55,7 @@ export const CurriculumMap = (props: CurriculumProps) => {
 
 
     return (
-        <Container>
+        <Container disableGutters sx={{ color: "black", minHeight: "100vh", backgroundColor: "white" }}>
             <Container disableGutters maxWidth="xl" sx={{ p: 0 }}>
                 <Typography
                     component="h1"
@@ -68,7 +68,8 @@ export const CurriculumMap = (props: CurriculumProps) => {
                 <Grid container maxWidth='xs' direction="row" columns={5} justifyContent="center" alignItems="center">
                     <Grid item md={1} sx={{ p: 0, textAlign: 'center' }}>
                         <Image
-                            src={"@/public/Escudo_Unison.png"}
+                            src={UniversidadSonora}
+                            alt="escudo-unison"
                             style={{ width: '50%', height: 'auto' }}
                         />
                     </Grid>
@@ -93,7 +94,8 @@ export const CurriculumMap = (props: CurriculumProps) => {
                     </Grid>
                     <Grid item md={1} sx={{ textAlign: 'center' }}>
                         <Image
-                            src={"../../../../public/logo-lcc-letras.svg"}
+                            src={LccLogo}
+                            alt="lcc-logo"
                             style={{ width: '50%', height: 'auto' }}
                         />
                     </Grid>

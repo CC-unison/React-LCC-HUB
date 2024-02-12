@@ -14,7 +14,7 @@ const DashboardPage = async () => {
     const student = await getStudentById(id || '');
 
     return (
-        <Container disableGutters sx={{ color: "black", minHeight: "100vh", backgroundColor: "white" }}>
+        <Container disableGutters sx={{ color: "black", minWidth: "100vw", minHeight: "100vh", backgroundColor: "white" }}>
             <Toolbar sx={{ justifyContent: "flex-end" }}>
                 <Typography mr={3}>
                     Usuario
@@ -24,7 +24,7 @@ const DashboardPage = async () => {
             {
                 !student.name ?
                     <NoDataPage /> :
-                    <Container>
+                    <Container disableGutters>
                         <Avance
                             approvedCredits={student.approvedCredits}
                             requiredCredits={student.requiredCredits}
