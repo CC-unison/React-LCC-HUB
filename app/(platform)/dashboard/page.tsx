@@ -1,25 +1,37 @@
-import { currentUser, UserButton } from "@clerk/nextjs";
+'use client'
 import { getStudentById } from "@/lib/firestore";
 import NoDataPage from "./_components/noDataPage";
 import { AppBar, Box, Container, Toolbar, Typography } from "@mui/material";
 import { Avance } from "./_components/avance";
 import { Trayectoria } from "./_components/trayectoria";
 import { CurriculumMap } from "./_components/curriculumMap";
+import { useMsal } from "@azure/msal-react";
+import { useEffect, useState } from "react";
 
+const DashboardPage = () => {
+    const { instance, accounts, inProgress } = useMsal();
+    const username = instance.getActiveAccount().username;
+    const id = username.split("@")[0].slice(1);
 
-const DashboardPage = async () => {
-    const user = await currentUser();
-    const email = user?.emailAddresses[0].emailAddress;
-    const id = email?.split('@')[0].substring(1);
-    const student = await getStudentById(id || '');
+    const [student, setStudent] = useState({});
+
+    useEffect(() => {
+        const getStudent = async () => {
+            const student = await getStudentById(id);
+            setStudent(student)
+        }
+
+        getStudent();
+    }, []);
 
     return (
         <Container disableGutters sx={{ color: "black", minWidth: "100vw", minHeight: "100vh", backgroundColor: "white" }}>
             <Toolbar sx={{ justifyContent: "flex-end" }}>
                 <Typography mr={3}>
-                    Usuario
+                    <button onClick={async () => await instance.logoutPopup({ mainWindowRedirectUri: '/' })}>
+                        LOGOUT
+                    </button>
                 </Typography>
-                <UserButton afterSignOutUrl="/" />
             </Toolbar>
             {
                 !student.name ?
