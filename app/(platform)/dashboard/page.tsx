@@ -7,7 +7,7 @@ import { Trayectoria } from "./_components/trayectoria";
 import { CurriculumMap } from "./_components/curriculumMap";
 import { useMsal } from "@azure/msal-react";
 import { useEffect, useState } from "react";
-
+import MaxWidthDialog from './_components/notificationsPanel';
 const DashboardPage = () => {
     const { instance, accounts, inProgress } = useMsal();
     const username = instance.getActiveAccount().username;
@@ -15,6 +15,15 @@ const DashboardPage = () => {
 
     const [student, setStudent] = useState({});
 
+    const [openNotifs, setOpenNotifs] = useState(false);
+
+    const handleClickOpenNotifs = () => {
+        setOpenNotifs(true);
+    };
+
+    const handleCloseNotifs = () => {
+        setOpenNotifs(false);
+    };
     useEffect(() => {
         const getStudent = async () => {
             const student = await getStudentById(id);
@@ -28,6 +37,9 @@ const DashboardPage = () => {
         <Container disableGutters sx={{ color: "black", minWidth: "100vw", minHeight: "100vh", backgroundColor: "white" }}>
             <Toolbar sx={{ justifyContent: "flex-end" }}>
                 <Typography mr={3}>
+                <button onClick={handleClickOpenNotifs}>
+                        NOTIFICATIONS
+                    </button>
                     <button onClick={async () => await instance.logoutPopup({ mainWindowRedirectUri: '/' })}>
                         LOGOUT
                     </button>
@@ -55,7 +67,7 @@ const DashboardPage = () => {
                         />
                     </Container>
             }
-
+        <MaxWidthDialog open={openNotifs} onClose={handleCloseNotifs} />
         </Container>
     );
 
