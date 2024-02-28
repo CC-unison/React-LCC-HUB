@@ -1,7 +1,7 @@
 "use client";
 
 import useScrollPosition from "@/lib/hooks/useScrollPosition";
-import { AppBar, Container, Stack, Typography } from "@mui/material";
+import { Link, AppBar, Container, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import CallMadeIcon from "@mui/icons-material/CallMade";
@@ -9,21 +9,28 @@ import LanguageIcon from "@mui/icons-material/Language";
 import MenuIcon from "@mui/icons-material/Menu";
 import LoginButton from "./LoginButton";
 
-const LinkButton = ({ children, ...props }) => (
-  <Stack
-    direction="row"
-    alignItems="center"
-    spacing={0.2}
-    sx={{
-      cursor: "pointer",
-      color: "text.secondary",
-      "&:hover": { color: "text.primary" },
-    }}
-    {...props}
-  >
-    {children}
-  </Stack>
-);
+interface LinkButtonProps {
+  text: string;
+  href: string;
+}
+const LinkButton = (props: LinkButtonProps) => {
+  const { text, href } = props;
+  return (
+    <Stack
+      direction="row"
+      alignItems="center"
+      spacing={0.2}
+      sx={{
+        cursor: "pointer",
+        color: "text.secondary",
+        "&:hover": { color: "text.primary" },
+      }}
+    >
+      <Typography variant="body2">{text}</Typography>
+      <KeyboardArrowDownIcon fontSize="small" />
+    </Stack>
+  );
+};
 
 export const MainNavbar = () => {
   const scrollPosition = useScrollPosition();
@@ -60,21 +67,9 @@ export const MainNavbar = () => {
             sx={{ flex: 1 }}
             flexWrap="wrap"
           >
-            <LinkButton>
-              <Typography variant="body2">Soy LCC</Typography>
-              <KeyboardArrowDownIcon fontSize="small" />
-            </LinkButton>
-
-            <LinkButton>
-              <Typography variant="body2">Noticias</Typography>
-              <KeyboardArrowDownIcon fontSize="small" />
-            </LinkButton>
-
-            <LinkButton>
-              <Typography variant="body2">Galería</Typography>
-              <KeyboardArrowDownIcon fontSize="small" />
-            </LinkButton>
-
+            <LinkButton text="Soy LCC" href="soylcc" />
+            <LinkButton text="Noticias" href="noticias" />
+            <LinkButton text="Galería" href="galeria" />
             {/*   <LinkButton> */}
             {/*     <Typography variant="body2">...</Typography> */}
             {/*     <KeyboardArrowDownIcon fontSize="small" /> */}

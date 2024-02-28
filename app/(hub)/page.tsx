@@ -1,9 +1,10 @@
-import { Container, Divider, Typography } from "@mui/material";
+import { Box, Container, Divider, Typography } from "@mui/material";
 import { MainFeaturedPost } from "./_components/mainFeaturedPost";
 import { SoyLCCsection } from "./_components/soyLCCsection";
 import { GallerySection } from "./_components/gallerySection";
 import { NoticiasSection } from "./_components/noticiasSection";
 import { Section1 } from "./_components/Section1";
+import { Section2 } from "./_components/Section2";
 import InvitadosWallpaper from "@/public/rectoria.jpg";
 
 const mainFeaturedPost = {
@@ -17,27 +18,27 @@ const mainFeaturedPost = {
 const HubPage = async () => {
   return (
     <div>
-      {/* <main> */}
-      {/*     <Container maxWidth={false} disableGutters sx={{ backgroundColor: "#ffffff" }}> */}
-      {/*         <MainFeaturedPost post={mainFeaturedPost} /> */}
-      {/*         <Container> */}
-      {/*             <Typography color={"black"} variant="h6">Soy LCC</Typography> */}
-      {/*             <Divider /> */}
-      {/*             <SoyLCCsection /> */}
-      {/*         </Container> */}
-      {/*         <Container> */}
-      {/*             <Typography color={"black"} variant="h6">Noticias</Typography> */}
-      {/*             <Divider /> */}
-      {/*             <NoticiasSection /> */}
-      {/*         </Container> */}
-      {/*         <Container> */}
-      {/*             <Typography color={"black"} variant="h6">Galery</Typography> */}
-      {/*             <Divider /> */}
-      {/*             <GallerySection /> */}
-      {/*         </Container> */}
-      {/*     </Container> */}
-      {/* </main> */}
       <Section1 />
+      <Box sx={{ bgcolor: "background.default", position: "relative" }}>
+        <div id="soylcc">
+          <SoyLCCsection />
+        </div>
+
+        <Container>
+          <Typography color={"black"} variant="h6">
+            Noticias
+          </Typography>
+          <Divider />
+          <NoticiasSection />
+        </Container>
+        <Container>
+          <Typography color={"black"} variant="h6">
+            Galery
+          </Typography>
+          <Divider />
+          <GallerySection />
+        </Container>
+      </Box>
     </div>
   );
 };

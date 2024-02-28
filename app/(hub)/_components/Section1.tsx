@@ -33,7 +33,7 @@ export const Section1 = () => {
             alignItems="center"
             spacing={4}
           >
-            <LoginButton />
+            <LoginButton bgcolor="rgba(7,7,16,.7)" />
           </Stack>
         </Stack>
       </Container>
