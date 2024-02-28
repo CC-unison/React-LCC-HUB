@@ -2,7 +2,7 @@ import { Stack, Button, Typography } from "@mui/material";
 import React from "react";
 import MicrosoftIcon from "@mui/icons-material/Microsoft";
 
-const LoginButton = () => {
+const LoginButton = ({ ...sx }) => {
   return (
     <Button
       variant="outlined"
@@ -13,6 +13,7 @@ const LoginButton = () => {
         borderColor: "text.primary",
         height: 58,
         px: 2,
+        ...sx,
       }}
     >
       <MicrosoftIcon sx={{ fontSize: 22 }} />

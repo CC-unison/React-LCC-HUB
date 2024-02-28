@@ -8,7 +8,7 @@ export const Section1 = () => {
       {/* Main Background */}
       <Box sx={{ position: "fixed", zIndex: -10, top: 0, left: 0, right: 0 }}>
         <Image
-          src="/main-bg-0_1.webp"
+          src="/LCC_invitados.webp"
           alt="Edificio de LCC"
           width={0}
           height={0}
