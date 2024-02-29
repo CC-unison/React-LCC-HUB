@@ -1,4 +1,5 @@
 import React from 'react';
+import { getsNotifs } from '@/lib/firestore';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
@@ -8,6 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
+import { useEffect, useState } from "react";
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import Divider from '@mui/material/Divider';
 interface MaxWidthDialogProps {
@@ -16,6 +18,18 @@ interface MaxWidthDialogProps {
 }
 
 export default function MaxWidthDialog({ open, onClose }: MaxWidthDialogProps) {
+    const [notifs, setNotifs] = useState([] as any[]);
+    const [activeTitulo, setActiveTitulo] = useState("")
+    const [activeDescripcion, setActiveDescripcion] = useState("")
+    useEffect(() => {
+        const getNotifs = async () => {
+            const notif = await getsNotifs();
+            setNotifs(notif)
+        }
+
+        getNotifs();
+    }, []);
+
     const Item = styled(Paper)(({ theme }) => ({
         ...theme.typography.body2,
         textAlign: 'left',
@@ -30,7 +44,16 @@ export default function MaxWidthDialog({ open, onClose }: MaxWidthDialogProps) {
             backgroundColor: 'lightgray'
           },
       }));
-
+    function handleText(titulo: React.SetStateAction<string>, descripcion: React.SetStateAction<string>){
+        setActiveDescripcion(descripcion);
+        setActiveTitulo(titulo);
+        console.log(notifs)
+    }
+    function handleClose(){
+        setActiveDescripcion("");
+        setActiveTitulo("");
+        onClose()
+    }
     return (
         <Dialog
             fullWidth={true}
@@ -49,22 +72,27 @@ export default function MaxWidthDialog({ open, onClose }: MaxWidthDialogProps) {
                 <Grid container rowSpacing={2} style={{ "border": '4px solid black',"height":"97%"}} marginTop={0} padding={0}>
                     <Grid item marginRight={0} padding={0}>
                         <Stack spacing={0.5}>
-                            <Item elevation={0} square >Notif 1</Item>
-                            <Divider variant="inset" />
-                            <Item elevation={0} square>Notif 2</Item>
-                            <Divider variant="inset" />
-                            <Item elevation={0} square>Notif 3</Item>
-                            <Divider variant="inset"/>
+                            {
+                                notifs.map((object) => (
+                                    <>
+                                    <Item elevation={0} square onClick={()=>handleText(object.title, object.body)}>{object.title}</Item>
+                                    <Divider variant="inset" />
+                                    </>
+                                ))
+                            }
                         </Stack>
                     </Grid>
                     <Divider orientation="vertical" flexItem />
-                    <Grid item>
-
+                    <Grid item xs={8}>
+                           <div style={{"marginLeft":"20px"}}>
+                           <h1>{activeTitulo}</h1>
+                            <p>{activeDescripcion}</p>
+                           </div>
                     </Grid>
                 </Grid>
             </DialogContent>
             <DialogActions>
-                <Button onClick={onClose}>Cerrar</Button>
+                <Button onClick={handleClose}>Cerrar</Button>
             </DialogActions>
         </Dialog>
     );

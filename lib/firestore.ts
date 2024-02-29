@@ -90,3 +90,19 @@ export async function generateSemesterMapDict(program: string[][]) {
     });
     return programDict;
 }
+
+export async function getsNotifs(){
+    const q = query(
+        collection(db, "alertas"),
+        orderBy("date", "desc"));
+    const results = await getDocs(q);
+    return results.docs.map(doc => {
+        const data = doc.data();
+        const date = data.date.toDate().toString();
+        return {
+            title: data.titulo,
+            body: data.descripcion,
+            date: date,
+        };
+    });
+}
