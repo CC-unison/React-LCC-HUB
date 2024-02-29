@@ -86,6 +86,7 @@ export default function MaxWidthDialog({ open, onClose }: MaxWidthDialogProps) {
                     <Grid item xs={8}>
                            <div style={{"marginLeft":"20px"}}>
                            <h1>{activeTitulo}</h1>
+                           <br/>
                             <p>{activeDescripcion}</p>
                            </div>
                     </Grid>
