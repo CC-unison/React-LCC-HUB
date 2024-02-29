@@ -1,10 +1,8 @@
 import { Box, Container, Divider, Typography } from "@mui/material";
-import { MainFeaturedPost } from "./_components/mainFeaturedPost";
 import { SoyLCCsection } from "./_components/soyLCCsection";
 import { GallerySection } from "./_components/gallerySection";
 import { NoticiasSection } from "./_components/noticiasSection";
 import { Section1 } from "./_components/Section1";
-import { Section2 } from "./_components/Section2";
 import InvitadosWallpaper from "@/public/rectoria.jpg";
 
 const mainFeaturedPost = {

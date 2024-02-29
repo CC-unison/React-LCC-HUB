@@ -27,7 +27,6 @@ const LinkButton = (props: LinkButtonProps) => {
       }}
     >
       <Typography variant="body2">{text}</Typography>
-      <KeyboardArrowDownIcon fontSize="small" />
     </Stack>
   );
 };
