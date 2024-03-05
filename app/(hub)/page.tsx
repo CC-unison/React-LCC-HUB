@@ -3,15 +3,6 @@ import { SoyLCCsection } from "./_components/soyLCCsection";
 import { GallerySection } from "./_components/gallerySection";
 import { NoticiasSection } from "./_components/noticiasSection";
 import { Section1 } from "./_components/Section1";
-import InvitadosWallpaper from "@/public/rectoria.jpg";
-
-const mainFeaturedPost = {
-  title: "LCC Hub Alpha v0",
-  description: "Seguimiento de trayectoria académica de alumnos de LCC",
-  image: InvitadosWallpaper,
-  imageText: "main image description",
-  linkText: "LOG IN",
-};
 
 const HubPage = async () => {
   return (
