@@ -1,61 +1,105 @@
 "use client";
-import React, { useEffect } from "react";
+
+import {
+  AuthenticatedTemplate,
+  UnauthenticatedTemplate,
+} from "@azure/msal-react";
 import { useMsal } from "@azure/msal-react";
-import CircularProgress from "@mui/material/CircularProgress";
-import Box from "@mui/material/Box";
-import { Container, Typography } from "@mui/material";
+import {
+  Checkbox,
+  Button,
+  FormControlLabel,
+  Box,
+  Grid,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
+import React from "react";
+import MicrosoftIcon from "@mui/icons-material/Microsoft";
+import Image from "next/image";
 
 const PlatformLayout = ({ children }: { children: React.ReactNode }) => {
   const { instance, accounts, inProgress } = useMsal();
-
   const loginRequest = {
-    scopes: ["User.Read"], // Define necessary scopes
+    scopes: ["User.Read"],
   };
+  return (
+    <>
+      <AuthenticatedTemplate>{children}</AuthenticatedTemplate>
+      <UnauthenticatedTemplate>
+        {/* Login */}
+        <Grid container component="main" sx={{ height: "100vh" }}>
+          <Grid item xs={false} sm={4} md={7}>
+            <Image
+              src="/rectoria.jpg"
+              alt="Edificio de LCC"
+              width={0}
+              height={0}
+              sizes="100vw"
+              style={{ width: "auto", height: "auto" }} // optional
+            />
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={8}
+            md={5}
+            component={Paper}
+            elevation={6}
+            square
+          >
+            <Box
+              sx={{
+                my: 8,
+                mx: 4,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Box sx={{ mt: 1 }}>
+                {/* LoginButton */}
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="outlined"
+                  onClick={async () => {
+                    await instance.loginPopup(loginRequest).then((response) => {
+                      instance.setActiveAccount(response.account);
+                    });
+                  }}
+                  sx={{
+                    justifyContent: "left",
+                    borderRadius: 4,
+                    color: "text.primary",
+                    borderColor: "text.primary",
+                    height: 90,
+                    px: 2,
+                  }}
+                >
+                  <MicrosoftIcon sx={{ fontSize: 36 }} />
 
-  useEffect(() => {
-    const popup = async () => {
-      await instance.loginPopup(loginRequest).then((response) => {
-        instance.setActiveAccount(response.account);
-      });
-    };
-    popup();
-  }, []);
-
-  return !(accounts.length > 0) ? (
-    <Container
-      sx={{
-        display: "flex",
-        height: "100vh",
-        width: "auto",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <CircularProgress size={150} sx={{ heigh: "100%" }} />
-    </Container>
-  ) : (
-    <div>{children}</div>
+                  <Stack sx={{ textAlign: "left", ml: 1 }}>
+                    <Typography variant="h3">Ingresar</Typography>
+                    <Typography variant="caption" sx={{ lineHeight: 1.3 }}>
+                      con identidad unison
+                    </Typography>
+                  </Stack>
+                </Button>
+                <FormControlLabel
+                  control={<Checkbox value="recordar" color="primary" />}
+                  label="Recuerdame"
+                  checked={true}
+                  disabled={true}
+                />
+              </Box>
+            </Box>
+          </Grid>
+        </Grid>
+      </UnauthenticatedTemplate>
+    </>
   );
-  // if (accounts.length > 0) {
-  //   return <div>{children}</div>;
-  // } else if (inProgress === "login") {
-  //   return <div>Login is currently in progress!</div>;
-  // } else {
-  //   return (
-  //     <div>
-  //       <div>There are currently no users signed in!</div>
-  //       <button
-  //         onClick={async () => {
-  //           await instance.loginPopup(loginRequest).then((response) => {
-  //             instance.setActiveAccount(response.account);
-  //           });
-  //         }}
-  //       >
-  //         Login
-  //       </button>
-  //     </div>
-  //   );
-  // }
 };
 
 export default PlatformLayout;
