@@ -55,19 +55,35 @@ const typography = {
 };
 
 const theme = createTheme({
+  // palette: {
+  //   mode: "dark",
+  //   primary: {
+  //     main: "#2f8af5",
+  //   },
+  //   background: {
+  //     default: "#06070A",
+  //   },
+  //   text: {
+  //     secondary: "rgba(255, 255, 255, 0.6)",
+  //   },
+  // },
   palette: {
-    mode: "dark",
     primary: {
-      main: "#2f8af5",
+      light: "#757ce8",
+      main: "#3f50b5",
+      dark: "#002884",
+      contrastText: "#fff",
     },
-    background: {
-      default: "#06070A",
-    },
-    text: {
-      secondary: "rgba(255, 255, 255, 0.6)",
+    secondary: {
+      light: "#ff7961",
+      main: "#f44336",
+      dark: "#ba000d",
+      contrastText: "#000",
     },
   },
-  typography,
+  typography: {
+    ...typography,
+  },
 });
 
 export default theme;

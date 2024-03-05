@@ -1,13 +1,9 @@
 "use client";
 
 import useScrollPosition from "@/lib/hooks/useScrollPosition";
-import { Link, AppBar, Container, Stack, Typography } from "@mui/material";
+import { AppBar, Container, Stack, Typography } from "@mui/material";
 import Image from "next/image";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import CallMadeIcon from "@mui/icons-material/CallMade";
-import LanguageIcon from "@mui/icons-material/Language";
-import MenuIcon from "@mui/icons-material/Menu";
-import LoginButton from "./LoginButton";
+import DashboardButton from "./DashboardButton";
 
 interface LinkButtonProps {
   text: string;
@@ -22,8 +18,8 @@ const LinkButton = (props: LinkButtonProps) => {
       spacing={0.2}
       sx={{
         cursor: "pointer",
-        color: "text.secondary",
-        "&:hover": { color: "text.primary" },
+        color: "text",
+        "&:hover": { color: "gray" },
       }}
     >
       <Typography variant="body2">{text}</Typography>
@@ -79,7 +75,7 @@ export const MainNavbar = () => {
             {/*     <CallMadeIcon sx={{ fontSize: 12 }} /> */}
             {/*   </LinkButton> */}
           </Stack>
-          <LoginButton borderRadius={3} />
+          <DashboardButton borderRadius={3} />
         </Stack>
       </Container>
     </AppBar>

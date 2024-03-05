@@ -1,6 +1,6 @@
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import Image from "next/image";
-import LoginButton from "./LoginButton";
+import DashboardButton from "./DashboardButton";
 
 export const Section1 = () => {
   return (
@@ -20,12 +20,20 @@ export const Section1 = () => {
       {/* Background Elements */}
 
       {/* Content*/}
-      <Container sx={{ height: "80vh" }}>
+      <Container sx={{ height: "90vh" }}>
         <Stack sx={{ height: "inherit" }} justifyContent="center">
-          <Typography variant="h1" sx={{ letterSpacing: "0.01em", mb: 1 }}>
+          <Typography
+            color="#FAF9F6"
+            variant="h1"
+            sx={{ letterSpacing: "0.01em", mb: 1 }}
+          >
             LCC Hub
           </Typography>
-          <Typography variant="h3" sx={{ letterSpacing: "0.03em", mb: 5 }}>
+          <Typography
+            color="#FAF9F6"
+            variant="h3"
+            sx={{ letterSpacing: "0.03em", mb: 5 }}
+          >
             un portal para la comunidad computóloga
           </Typography>
           <Stack
@@ -33,7 +41,7 @@ export const Section1 = () => {
             alignItems="center"
             spacing={4}
           >
-            <LoginButton bgcolor="rgba(7,7,16,.7)" />
+            <DashboardButton bgcolor="rgba(7,7,16,.7)" />
           </Stack>
         </Stack>
       </Container>
