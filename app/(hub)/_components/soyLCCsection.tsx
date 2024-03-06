@@ -23,7 +23,7 @@ export const SoyLCCsection = () => {
     <Container sx={{ py: 5 }}>
       <Stack>
         <Typography variant="h3" fontWeight={700}>
-          Soy LCC
+          Mensajes de nuestros ancestros (SoyLCC)
         </Typography>
         <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
           <Swiper

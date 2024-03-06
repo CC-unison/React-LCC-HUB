@@ -14,7 +14,7 @@ const HubPage = async () => {
       >
         <SoyLCCsection />
         <NoticiasSection />
-        {/* <GallerySection /> */}
+        <GallerySection />
       </Stack>
     </div>
   );
