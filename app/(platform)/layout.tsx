@@ -3,8 +3,9 @@
 import {
   AuthenticatedTemplate,
   UnauthenticatedTemplate,
+  useMsal,
 } from "@azure/msal-react";
-import { useMsal } from "@azure/msal-react";
+import Loading from "./loading";
 import {
   Checkbox,
   Button,
@@ -15,7 +16,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { Suspense } from "react";
 import MicrosoftIcon from "@mui/icons-material/Microsoft";
 import Image from "next/image";
 
@@ -25,7 +26,8 @@ const PlatformLayout = ({ children }: { children: React.ReactNode }) => {
     scopes: ["User.Read"],
   };
   return (
-    <>
+    <Suspense fallback={<Loading />}>
+      {" "}
       <AuthenticatedTemplate>{children}</AuthenticatedTemplate>
       <UnauthenticatedTemplate>
         {/* Login */}
@@ -98,7 +100,7 @@ const PlatformLayout = ({ children }: { children: React.ReactNode }) => {
           </Grid>
         </Grid>
       </UnauthenticatedTemplate>
-    </>
+    </Suspense>
   );
 };
 
