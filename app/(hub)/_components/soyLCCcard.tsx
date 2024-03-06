@@ -1,8 +1,6 @@
 import * as React from "react";
-import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
-import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { CardHeader, Skeleton } from "@mui/material";
 
@@ -18,7 +16,9 @@ interface SoyLCCcardProps {
 
 export const LoadingSoyLCCcard = () => {
   return (
-    <Card sx={{ maxWidth: 400, m: 2 }}>
+    <Card
+      sx={{ display: "flex", justifyContent: "center", maxWidth: 400, m: 2 }}
+    >
       <CardHeader
         title={
           <Skeleton
@@ -37,7 +37,6 @@ export const LoadingSoyLCCcard = () => {
 
 export const SoyLCCcard = (props: SoyLCCcardProps) => {
   const { post } = props;
-  post.date = post.date.split(" ").slice(3).toString();
 
   return (
     <CardActionArea

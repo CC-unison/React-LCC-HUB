@@ -1,11 +1,4 @@
-import {
-  Box,
-  Container,
-  Divider,
-  Grid,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Stack } from "@mui/material";
 import { SoyLCCsection } from "./_components/soyLCCsection";
 import { GallerySection } from "./_components/gallerySection";
 import { NoticiasSection } from "./_components/noticiasSection";
@@ -20,8 +13,7 @@ const HubPage = async () => {
         sx={{ mt: 20, alignItems: "center", bgcolor: "#FAF9F6" }}
       >
         <SoyLCCsection />
-        <SoyLCCsection />
-        {/* <NoticiasSection /> */}
+        <NoticiasSection />
         {/* <GallerySection /> */}
       </Stack>
     </div>

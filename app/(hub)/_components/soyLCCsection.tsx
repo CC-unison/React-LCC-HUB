@@ -7,14 +7,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { getSoyLCCvideos } from "@/lib/firestore";
 import { useEffect, useState } from "react";
-import {
-  Box,
-  Container,
-  Typography,
-  Divider,
-  Stack,
-  Skeleton,
-} from "@mui/material";
+import { Box, Container, Typography, Stack } from "@mui/material";
 
 export const SoyLCCsection = () => {
   const [posts, setPosts] = useState();
@@ -58,15 +51,6 @@ export const SoyLCCsection = () => {
           </Swiper>
         </Box>
       </Stack>
-      {/* <Container sx={{ mt: 50 }}> */}
-      {/*   <Container maxWidth="md"> */}
-      {/*     <Typography variant="h2" sx={{ mb: 2 }}> */}
-      {/*       Soy LCC */}
-      {/*     </Typography> */}
-      {/*   </Container> */}
-      {/*   <Box className="container second" sx={{ display: "flex" }}> */}
-      {/*   </Box> */}
-      {/* </Container> */}
     </Container>
   );
 };
