@@ -1,12 +1,11 @@
 "use client";
-import { getStudentById } from "@/lib/firestore";
+import { getNotifications, getStudentById } from "@/lib/firestore";
 import NoDataPage from "./_components/noDataPage";
 import {
   AppBar,
-  Badge,
   Box,
-  Button,
-  Container,
+  Menu,
+  MenuItem,
   IconButton,
   Toolbar,
   Typography,
@@ -18,13 +17,26 @@ import { CurriculumMap } from "./_components/curriculumMap";
 import { useMsal } from "@azure/msal-react";
 import { useEffect, useState } from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
+import NotificationImportantIcon from "@mui/icons-material/NotificationImportant";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import Loading from "../loading";
+import React from "react";
+
 const DashboardPage = () => {
   const { instance, accounts, inProgress } = useMsal();
   const username = instance.getActiveAccount().username;
   const id = username?.split("@")[0].slice(1);
 
   const [student, setStudent] = useState({});
+  const [alarms, setAlarms] = useState([]);
+  const [anchorElnotifs, setAnchorElnotifs] =
+    React.useState<null | HTMLElement>(null);
+  const closeNotifs = () => {
+    setAnchorElnotifs(null);
+  };
+  const handleNotifs = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElnotifs(event.currentTarget);
+  };
 
   useEffect(() => {
     const getStudent = async () => {
@@ -32,7 +44,13 @@ const DashboardPage = () => {
       setStudent(student);
     };
 
+    const getAlerts = async () => {
+      const notifs = await getNotifications();
+      setAlarms(notifs);
+    };
+
     getStudent();
+    getAlerts();
   }, []);
 
   if (inProgress == "logout") {
@@ -58,6 +76,56 @@ const DashboardPage = () => {
             </Typography>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: { xs: "none", md: "flex" } }}>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleNotifs}
+                color="inherit"
+              >
+                {alarms && alarms.length > 0 ? (
+                  <NotificationImportantIcon />
+                ) : (
+                  <NotificationsIcon />
+                )}
+              </IconButton>
+
+              <Menu
+                id="menu-appbar2"
+                anchorEl={anchorElnotifs}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElnotifs)}
+                onClose={closeNotifs}
+              >
+                {alarms && alarms.length > 0 ? (
+                  alarms.map((object) => {
+                    if (true) {
+                      //la condicion va aqui lol
+                      const truncatedDescripcion = object.descripcion.slice(
+                        0,
+                        20,
+                      );
+                      return (
+                        <MenuItem key={object.id}>
+                          <strong>{object.titulo}</strong>
+                        </MenuItem>
+                      );
+                    }
+                    return null; // Add this line to handle the case where showInPage is not true
+                  })
+                ) : (
+                  <MenuItem>No hay notificaciones.</MenuItem>
+                )}
+              </Menu>
               <IconButton
                 onClick={async () =>
                   await instance.logoutRedirect({ mainWindowRedirectUri: "/" })
