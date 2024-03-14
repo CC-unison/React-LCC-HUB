@@ -21,6 +21,7 @@ import NotificationImportantIcon from "@mui/icons-material/NotificationImportant
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import Loading from "../loading";
 import React from "react";
+import Link from "next/link";
 
 const DashboardPage = () => {
   const { instance, accounts, inProgress } = useMsal();
@@ -28,6 +29,7 @@ const DashboardPage = () => {
   const id = username?.split("@")[0].slice(1);
 
   const [student, setStudent] = useState({});
+  const [studentLoading, setStudentLoading] = useState(false);
   const [alarms, setAlarms] = useState([]);
   const [anchorElnotifs, setAnchorElnotifs] =
     React.useState<null | HTMLElement>(null);
@@ -40,8 +42,10 @@ const DashboardPage = () => {
 
   useEffect(() => {
     const getStudent = async () => {
+      setStudentLoading(true);
       const student = await getStudentById(id);
       setStudent(student);
+      setStudentLoading(false);
     };
 
     const getAlerts = async () => {
@@ -53,19 +57,21 @@ const DashboardPage = () => {
     getAlerts();
   }, []);
 
-  if (inProgress == "logout") {
+  if (inProgress == "login" || inProgress == "logout" || studentLoading) {
     return <Loading />;
   } else if (accounts.length > 0) {
     return (
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
-            <Image
-              src="/logo-lcc-blanco.svg"
-              alt="Logo LCC"
-              width={145}
-              height={54}
-            />
+            <Link href="/" style={{ color: "inherit" }}>
+              <Image
+                src="/logo-lcc-blanco.svg"
+                alt="Logo LCC"
+                width={145}
+                height={54}
+              />
+            </Link>
             <Typography
               variant="h6"
               noWrap
