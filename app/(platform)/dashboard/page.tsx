@@ -25,7 +25,7 @@ import Link from "next/link";
 
 const DashboardPage = () => {
   const { instance, accounts, inProgress } = useMsal();
-  const username = instance.getActiveAccount().username;
+  const username = instance.getActiveAccount()?.username;
   const id = username?.split("@")[0].slice(1);
 
   const [student, setStudent] = useState({});
@@ -42,15 +42,19 @@ const DashboardPage = () => {
 
   useEffect(() => {
     const getStudent = async () => {
-      setStudentLoading(true);
-      const student = await getStudentById(id);
-      setStudent(student);
-      setStudentLoading(false);
+      if (username && id) {
+        setStudentLoading(true);
+        const student = await getStudentById(id);
+        setStudent(student);
+        setStudentLoading(false);
+      }
     };
 
     const getAlerts = async () => {
-      const notifs = await getNotifications();
-      setAlarms(notifs);
+      if (username && id) {
+        const notifs = await getNotifications();
+        setAlarms(notifs);
+      }
     };
 
     getStudent();
@@ -59,7 +63,7 @@ const DashboardPage = () => {
 
   if (inProgress == "login" || inProgress == "logout" || studentLoading) {
     return <Loading />;
-  } else if (accounts.length > 0) {
+  } else if (accounts.length > 0 && username && id) {
     return (
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
@@ -145,7 +149,7 @@ const DashboardPage = () => {
             </Box>
           </Toolbar>
         </AppBar>
-        {!student.name ? (
+        {!(username && id && student && student.name) ? (
           <NoDataPage />
         ) : (
           <>

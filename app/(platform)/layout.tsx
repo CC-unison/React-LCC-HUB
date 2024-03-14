@@ -25,6 +25,12 @@ const PlatformLayout = ({ children }: { children: React.ReactNode }) => {
   const loginRequest = {
     scopes: ["User.Read"],
   };
+
+  if (inProgress == "login") {
+    return <Loading display="iniciando sesión" />;
+  } else if (inProgress == "logout") {
+    return <Loading display="cerrando sesión" />;
+  }
   return (
     <Suspense fallback={<Loading />}>
       {" "}

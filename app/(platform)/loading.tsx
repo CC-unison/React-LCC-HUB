@@ -3,7 +3,12 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import { Stack, Typography } from "@mui/material";
 
-export default function Loading() {
+interface LoadingProps {
+  display?: string | null;
+}
+
+export default function Loading(props: LoadingProps) {
+  const { display } = props;
   return (
     <Box
       height="100vh"
@@ -21,7 +26,7 @@ export default function Loading() {
           fontStyle="oblique"
           sx={{ pt: 3 }}
         >
-          loading
+          {display || "cargando"}
         </Typography>
       </Stack>
     </Box>
