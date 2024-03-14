@@ -8,12 +8,20 @@ import {
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
+const options = {
+  weekday: "long",
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+};
+
 export async function getSoyLCCvideos() {
   const q = query(collection(db, "videos"), orderBy("date", "desc"));
   const results = await getDocs(q);
   return results.docs.map((doc) => {
     const data = doc.data();
-    const date = data.date.toDate().toString();
+    const date = data.date.toDate().toLocaleDateString("es-MX", options);
+    console.log(data.date.toDate().toLocaleDateString("es-MX", options));
     return {
       image: data.img,
       imageLabel: data.titulo,
@@ -29,7 +37,7 @@ export async function getNoticias() {
   const results = await getDocs(q);
   return results.docs.map((doc) => {
     const data = doc.data();
-    const date = data.date.toDate().toString();
+    const date = data.date.toDate().toLocaleDateString("es-MX", options);
     return {
       title: data.titulo,
       date: date,
