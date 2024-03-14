@@ -23,7 +23,7 @@ export const SoyLCCsection = () => {
     <Container sx={{ py: 5 }}>
       <Stack>
         <Typography variant="h3" fontWeight={700}>
-          Mensajes de nuestros ancestros (SoyLCC)
+          Conoce a nuestros egresados con SoyLCC
         </Typography>
         <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
           <Swiper
@@ -43,7 +43,7 @@ export const SoyLCCsection = () => {
                       <LoadingSoyLCCcard />
                     </SwiperSlide>
                   ))
-              : posts.map((post, i) => (
+              : posts.map((post, i: number) => (
                   <SwiperSlide key={i}>
                     <SoyLCCcard post={post} key={post.title} />
                   </SwiperSlide>

@@ -2,7 +2,7 @@ import * as React from "react";
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
 import CardMedia from "@mui/material/CardMedia";
-import { CardHeader, Skeleton } from "@mui/material";
+import { Box, CardHeader, Skeleton } from "@mui/material";
 
 interface SoyLCCcardProps {
   post: {
@@ -16,22 +16,22 @@ interface SoyLCCcardProps {
 
 export const LoadingSoyLCCcard = () => {
   return (
-    <Card
-      sx={{ display: "flex", justifyContent: "center", maxWidth: 400, m: 2 }}
-    >
-      <CardHeader
-        title={
-          <Skeleton
-            animation="wave"
-            height={10}
-            width="80%"
-            style={{ marginBottom: 6 }}
-          />
-        }
-        subheader={<Skeleton animation="wave" height={10} width="40%" />}
-      />
-      <Skeleton sx={{ height: 240 }} animation="wave" variant="rectangular" />
-    </Card>
+    <Box sx={{ display: "flex", justifyContent: "center" }}>
+      <Card sx={{ width: 400, m: 2 }}>
+        <CardHeader
+          title={
+            <Skeleton
+              animation="wave"
+              height={10}
+              width="80%"
+              style={{ marginBottom: 6 }}
+            />
+          }
+          subheader={<Skeleton animation="wave" height={10} width="40%" />}
+        />
+        <Skeleton sx={{ height: 240 }} animation="wave" variant="rectangular" />
+      </Card>
+    </Box>
   );
 };
 
