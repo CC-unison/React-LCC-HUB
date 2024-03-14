@@ -21,7 +21,6 @@ export async function getSoyLCCvideos() {
   return results.docs.map((doc) => {
     const data = doc.data();
     const date = data.date.toDate().toLocaleDateString("es-MX", options);
-    console.log(data.date.toDate().toLocaleDateString("es-MX", options));
     return {
       image: data.img,
       imageLabel: data.titulo,

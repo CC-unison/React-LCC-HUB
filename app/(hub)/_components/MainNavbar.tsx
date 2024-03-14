@@ -4,6 +4,7 @@ import useScrollPosition from "@/lib/hooks/useScrollPosition";
 import { AppBar, Container, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import DashboardButton from "./DashboardButton";
+import Link from "next/link";
 
 interface LinkButtonProps {
   text: string;
@@ -22,7 +23,15 @@ const LinkButton = (props: LinkButtonProps) => {
         "&:hover": { color: "gray" },
       }}
     >
-      <Typography variant="body2">{text}</Typography>
+      <Link
+        style={{
+          textDecoration: "inherit",
+          color: "inherit",
+        }}
+        href={href}
+      >
+        <Typography variant="body2">{text}</Typography>
+      </Link>
     </Stack>
   );
 };
@@ -62,9 +71,9 @@ export const MainNavbar = () => {
             sx={{ flex: 1 }}
             flexWrap="wrap"
           >
-            <LinkButton text="Soy LCC" href="soylcc" />
-            <LinkButton text="Noticias" href="noticias" />
-            <LinkButton text="Galería" href="galeria" />
+            <LinkButton text="Soy LCC" href="#soylcc" />
+            <LinkButton text="Noticias" href="#noticias" />
+            <LinkButton text="Galería" href="#galeria" />
             {/*   <LinkButton> */}
             {/*     <Typography variant="body2">...</Typography> */}
             {/*     <KeyboardArrowDownIcon fontSize="small" /> */}

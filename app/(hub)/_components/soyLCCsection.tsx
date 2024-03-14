@@ -20,7 +20,7 @@ export const SoyLCCsection = () => {
   }, []);
 
   return (
-    <Container sx={{ py: 5 }}>
+    <Container sx={{ pt: 10 }}>
       <Stack>
         <Typography variant="h3" fontWeight={700}>
           Conoce a nuestros egresados con SoyLCC

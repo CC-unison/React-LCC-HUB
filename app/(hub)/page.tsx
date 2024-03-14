@@ -12,8 +12,11 @@ const HubPage = async () => {
         spacing={2}
         sx={{ mt: 20, alignItems: "center", bgcolor: "#FAF9F6" }}
       >
+        <div id="soylcc" />
         <SoyLCCsection />
+        <div id="noticias" />
         <NoticiasSection />
+        <div id="galeria" />
         <GallerySection />
       </Stack>
     </div>

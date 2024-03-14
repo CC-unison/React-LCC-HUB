@@ -6,7 +6,7 @@ export const NoticiasSection = async () => {
   const noticiasPosts = await getNoticias();
 
   return (
-    <Container sx={{ py: 5 }}>
+    <Container sx={{ pt: 10 }}>
       <Stack>
         <Typography variant="h3" fontWeight={700}>
           Noticias de última hora
